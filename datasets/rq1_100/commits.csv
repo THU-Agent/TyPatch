@@ -1,0 +1,101 @@
+pool_index,commit,subject,audited_family
+1,eedc6867ebad73edbfaf9a0a65fbef7115cc4753,Bluetooth: btusb: fix use-after-free on registration failure,use_after_release
+2,107a4cb0d47e735830f852d83970d5c81f8e1e08,rxrpc: Fix UAF in rxgk_issue_challenge(),use_after_release
+3,85b6256469cebdac395e7447147e06b2e151014f,fbdev: modedb: fix a possible UAF in fb_find_mode(),use_after_release
+4,6df6b1f2c49678211f65647c300bc51dda02893b,HID: hidpp: fix potential UAF in hidpp_connect_event(),use_after_release
+5,a6582701178a47c4d0cb2188c965c59c0c0647c8,drm/amd/pm: fix a double-free in amdgpu_parse_extended_power_table,double_action
+6,acc44cbd7727115f9381c35c2898b1b5af665ec8,wifi: cfg80211: avoid double free if updating BSS fails,double_action
+7,f9c169b51b6ce20394594ef674d6b10efba31220,smb: client: fix double put of @cfile in smb2_set_path_size(),double_action
+8,5d07ab2a7fa1305e429d9221716582f290b58078,spi: fsl-qspi: Fix double cleanup in probe error path,double_action
+9,0c66b0da006415880444ec821e3cb66a89273865,sched_ext: Fix cgroup double-put on sub-sched abort path,double_action
+10,63542bb402b7013171c9f621c28b609eda4dbf1f,spi: meson-spicc: Fix double-put in remove path,double_action
+11,6af3330ec5d5fb8c06c04eb520a71cf73ea5a765,virtio-fs: avoid double-free on failed queue setup,double_action
+12,d3a9a8cf2d7fd61a2f63df61f6cbc0a9bb007cc0,staging: media: ipu7: fix double-free and use-after-free in error paths,double_action
+13,c4faab452b3c1ada003d49c477609dd80523b9bf,gpib: fix double decrement of descriptor_busy in command_ioctl(),double_action
+14,18d216788bef06332ff8901670ecf1ed8f6eb614,sunrpc: harden rq_procinfo lifecycle to prevent double-free,double_action
+15,7886054b06f762f62054957a8f6de0f14e6b7541,spi: ep93xx: fix double-free of zeropage on DMA setup failure,double_action
+16,c39a9a02bc5d841c116dc03c264eb9ceecde806e,scsi: megaraid_mbox: Avoid double kfree(),double_action
+17,c849de7d8757a7af801fc4a4058f71d481d367f2,netdev: fix double-free in netdev_nl_bind_rx_doit(),double_action
+18,145f820dcbb2cced374f2532f8a61a44dce4a615,smb: client: fix change notify replay double-free,double_action
+19,f67790a0715edd292d64a104e6e294290243d16d,drm/amd/display: Fix double free,double_action
+20,bcb8889c4981fdde42d4fd2c29a77d510fe21da2,cpufreq: qcom-cpufreq-hw: Fix possible double free,double_action
+21,f396f4005180928cd9e15e352a6512865d3bc908,Bluetooth: btmtk: fix URB leak in alloc_mtk_intr_urb error path,missing_release
+22,1c1e0fc88d6ef65bf15d517853251f75ab9d18c3,gpio: rockchip: fix generic IRQ chip leak on remove,missing_release
+23,606c0826bd90384a54571c0c5475ca41f50164ea,spi: meson-spifc: fix runtime PM leak on remove,missing_release
+24,6e9cab2247e5b243ae2d907ce7c948a8a9c8d61a,platform/x86: dell-laptop: fix missing cleanups in init error path,missing_release
+25,d46f9f23897261da53ffbeb89d48a13982ba7d28,ASoC: SOF: topology: fix memory leak in snd_sof_load_topology,missing_release
+26,53442aad1d5790932ed82220bd3c9e1ee9388b83,rocker: Fix memory leak in ofdpa_port_fdb(),missing_release
+27,ba45106342bbdd905651cb9fcefb8c11871d4c25,devlink: Fix parent ref leak in devl_rate_node_create(),missing_release
+28,16e088016f38cf728a0de709c3335cc5a3850476,net/sched: act_ct: fix nf_connlabels leak on two error paths,missing_release
+29,41782770be567abc6509169d0ffdada31c783a66,net: ethernet: mtk_ppe: Fix rhashtable leak in mtk_ppe_init error paths,missing_release
+30,1358126fbed104e5657955d3ba029b283687ba02,irqchip/irq-riscv-imsic-early: Fix fwnode leak on state setup failure,missing_release
+31,1c6267a1d5cf4c73b656f8181b310cbbb3e4767b,smb: client: Fix next buffer leak in receive_encrypted_standard(),missing_release
+32,4e8eb6952aa6749726c6c3763ae0032a6332c24f,gpio: davinci: fix IRQ domain leak on devm_kzalloc failure,missing_release
+33,26490a375cb9be9bac96b5171610fd85ca6c2305,bpf: Fix insn_aux_data leak on verifier err_free_env path,missing_release
+34,fcaf242e7fc406e78f444a35441e3b58f5e28781,ata: pata_pxa: Fix DMA channel leak on probe error,missing_release
+35,9a8826fdfbcd7ed2ccf745f5d54208358d939def,IB/mlx4: Fix refcount leak in add_port() error path,refcount_imbalance
+36,148cd4873115feb266c002d4d4618ea7f14342d9,block: partitions: fix of_node refcount leak in of_partition(),refcount_imbalance
+37,badc53620fe813b3a9f727ef9526f98567c2c898,nvme: target: rdma: fix ndev refcount leak on queue connect,refcount_imbalance
+38,fa11039d6cdff84584a3ef8cc1f5e1b56e045da2,regulator: scmi: fix of_node refcount leak in scmi_regulator_probe(),refcount_imbalance
+39,3b09ff54114566864eea59020f6b69c5bb325b9d,net: qrtr: fix node refcount leak on ctrl packet alloc failure,refcount_imbalance
+40,6ae67dcac742529210a23dac6c9a7de1acfb52a3,KVM: s390: Fix possible reference leak in fault-in code,refcount_imbalance
+41,81ec618f59415bdcf3e8989e2691c1f240be27fb,perf/x86/intel/uncore: Fix PCI device refcount leak in UPI discovery,refcount_imbalance
+42,8d13f7a8450206e3f820cdb26e33e91d181071b4,hwrng: jh7110 - fix refcount leak in starfive_trng_read(),refcount_imbalance
+43,a3f3859cecacb64f18fd446271ece9a3b3f2d4de,ipmi: fix refcount leak in i_ipmi_request(),refcount_imbalance
+44,6ea0ce3a19f9c37a014099e2b0a46b27fa164564,crypto: tegra - fix refcount leak in tegra_se_host1x_submit(),refcount_imbalance
+45,9c37eac31c559b079d55890d1dbe70072fec0435,i2c: riic: fix refcount leak in riic_i2c_resume_noirq(),refcount_imbalance
+46,34b9a83c50660148bde01cde16451dbe78369749,nvmet: fix refcount leak in nvmet_sq_create(),refcount_imbalance
+47,41c8c1d65b32beacd8d916a22457b4f6e47f45af,mlxsw: fix refcount leak in mlxsw_sp_port_lag_join(),refcount_imbalance
+48,ba36786b21d19082e696eda85bfcd49e7071944a,drm/xe: fix refcount leak in xe_range_fence_insert(),refcount_imbalance
+49,4373cfa38ead58f980362c841b0d0bdf8c4d956c,power: supply: charger-manager: fix refcount leak in is_full_charged(),refcount_imbalance
+50,87bd2ad568e15b90d5f7d4bcd70342d05dad649c,posix-cpu-timers: Fix pid refcount leak in do_cpu_nanosleep() error path,refcount_imbalance
+51,819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb,drivers: virt: acrn: hsm: Use kzalloc to avoid info leak in pmcmd_ioctl,uninitialized_use
+52,f63a9df7e3f9f842945d292a19d9938924f066f9,sysctl: fix uninitialized variable in proc_do_large_bitmap,uninitialized_use
+53,8a59a2d84fa3de2b4bbb8759b52e62c9c06d9d32,ntfs: fix uninitialized variable in ntfs_write_simple_iomap_begin_non_resident,uninitialized_use
+54,b38e53cbfb9d84732e5984fbd73e128d592415c5,usb: usblp: fix uninitialized heap leak via LPGETSTATUS ioctl,uninitialized_use
+55,863810d4985ad214f70c1623f24384ccc850f2a2,platform/x86: lenovo: wmi-other: Fix uninitialized variable in lwmi_om_hwmon_write(),uninitialized_use
+56,03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602,wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init(),guarded_nullable_use
+57,8318e04ab2526b155773313b66a1542476ce1106,ASoC: qcom: audioreach: fix potential null pointer dereference,guarded_nullable_use
+58,dc3382fffdec2c1d6df5836c88fa37b39cd8651e,tracing: kprobe-event: Fix null-ptr-deref in trace_kprobe_create_internal(),guarded_nullable_use
+59,188e0fa5a679570ea35474575e724d8211423d17,net/hsr: fix NULL pointer dereference in prp_get_untagged_frame(),guarded_nullable_use
+60,dabac51b8102e1643d8e297a8e6948dab190aa4c,net/handshake: Fix null-ptr-deref in handshake_complete(),guarded_nullable_use
+61,14ad4c10d5bdd413ff9a914260e89b5f54b7a2c7,usb: typec: ucsi: Fix null pointer dereference in ucsi_sync_control_common,guarded_nullable_use
+62,3358995b1a7f9dcb52a56ec8251570d71024dad0,bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable during error cleanup,use_after_release
+63,27880b0b0d35ad1c98863d09788254e36f874968,net/sched: act_ife: avoid possible NULL deref,guarded_nullable_use
+64,28df30e61b46a33d1f0bb60757747396886ef687,"rtc: ds1374, fix lock imbalance",acquire_release_order
+65,7c0ace54887872ebd99fefdfe85d273295a09426,Staging: vme: bridges: Add missing unlocks,acquire_release_order
+66,4c61f678a468768afd45c3d9ac697f8f55aa04eb,V4L/DVB: drivers/media/video/pvrusb2: Add missing mutex_unlock,acquire_release_order
+67,9e6e7c74315095fd40f41003850690c711e44420,s390/crypto: unlock on error in prng_tdes_read(),acquire_release_order
+68,96621ca578dbadeb12bd190e0733cdc5c76899d8,drm/amdkfd: Add missing NULL check in svm_range_map_to_gpu,unchecked_allocation_npd
+69,4c7a548a70a44269266858f65c3b5fc9c3ace057,ALSA: hda - check NULL pointer when creating SPDIF PCM switch,guarded_nullable_use
+70,71abf20b28ff87fee6951ec2218d5ce7969c4e87,RDMA/rxe: Handle skb_clone() failure in rxe_recv.c,guarded_nullable_use
+71,a0fe29d20e7822182e12324905af5115c1b3aed3,soc: fsl: qe: panic on ioremap() failure in qe_reset(),guarded_nullable_use
+72,aa7069d840dab6bef4887657b94e439c82ae985a,scsi: qedf: Fix potential dereference of NULL pointer,guarded_nullable_use
+73,97b17dd8266d2e26d9ee3c75a0fa34ecde6944f0,spi: orion: fix runtime pm leak on unbind,missing_release
+74,3a56855bb549211031184e45fe1a9d24874d7227,ALSA: scarlett2: Zero initialize ret in scarlett2_ag_target_ctl_get(),uninitialized_use
+75,b4e964f84c1a44b0c63a5036efb24cf0f938db0a,habanalabs/gaudi: Fix uninitialized return code rc when read size is zero,uninitialized_use
+76,ee895ccdf776a676655b1405d493cfcf43d157f0,misc: sram: fix enabled clock leak on error path,missing_release
+77,b0eeba527e704d6023a6cd9103f929226e326b03,pinctrl: stm32: Add check for devm_kcalloc,guarded_nullable_use
+78,487767bff572d46f7c37ad846c4078f6d6c9cc55,md: dm-zoned-target: Initialize return variable r to avoid uninitialized use,uninitialized_use
+79,b5c7a7f452b885bfbe102bd3a057a5f496802f8b,drm/msm/a6xx: Check kzalloc return in a8xx_hfi_send_perf_table,guarded_nullable_use
+80,21e9a838f505178e109ccb3bf19d7808eb0326f4,drm/msm/dpu: check for null return of devm_kzalloc() in dpu_writeback_init(),guarded_nullable_use
+81,85a7555575a0e48f9b73db310d0d762a08a46d63,"ASoC: wm_adsp: remove ""ctl"" from list on error in wm_adsp_create_control()",publish_before_init
+82,abfaf0eee97925905e742aa3b0b72e04a918fa9e,drm/amdkfd: Check for null pointer after calling kmemdup,guarded_nullable_use
+83,ab42b48f32d4c766420c3499ee9c0289b7028182,staging: comedi: gsc_hpdi: check dma_alloc_coherent() return value,guarded_nullable_use
+84,28dd788382c43b330480f57cd34cde0840896743,drivers/amd/pm: fix a use-after-free in kv_parse_power_table,use_after_release
+85,a0130d682222ae21afc395aead7cd2d87e1a8358,net: ibm: emac: Fix use-after-free during device removal,use_after_release
+86,e1686ca81dbf3edbde589b7daf312b45cbf76e03,of: reserved_mem: avoid post-init UAF when alloc_reserved_mem_array() fails,use_after_release
+87,2c1c805c65fb7dc7524e20376d6987721e73a0b1,fbdev: fix use-after-free in store_modes(),use_after_release
+88,a260bd22a355bcdb74cedac6ab9b10739cd2c62c,media: mc: fix potential use-after-free in media_request_alloc(),use_after_release
+89,541dfb49dcb80c2509e030842de77adfb77820f5,hwmon: (emc2305) fix double put in emc2305_probe_childs_from_dt,double_action
+90,7cb1c5b32a2bfde961fff8d5204526b609bcb30a,staging: most: video: avoid double free on video register failure,double_action
+91,6d827ade51a24e18d81afb9f32756d339520a14c,crypto: amlogic - avoid double cleanup in meson_crypto_probe(),double_action
+92,266d3dd8b757b48a576e90f018b51f7b7563cc32,cpufreq: pcc: fix use-after-free and double free in _OSC evaluation,double_action
+93,d189f224308c8ac3feeea8e442c99922bd18f1b2,NFS: Prevent resource leak in nfs_alloc_server(),missing_release
+94,a440c17869ecd71da0f295b62868fc742d09a8ba,ALSA: usb-audio: Update US-16x08 EQ/comp shadow state after successful writes,publish_before_init
+95,1aec30021edd410b986c156f195f3d23959a9d11,ext4: publish jinode after initialization,publish_before_init
+96,d3366a04770eea807f2826cbdb96934dd8c9bf79,Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak,uninitialized_use
+97,da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7,fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref,guarded_nullable_use
+98,b0b73329ebeeb727913f07b5b6bb85e66e03d156,cifs: Fix null-ptr-deref by static initializing global lock,uninitialized_use
+99,930a9a6ee8e7ffa20af4bffbfc2bbd21d83bf81c,f2fs: fix to avoid NULL pointer dereference in f2fs_check_quota_consistency(),guarded_nullable_use
+100,a51f025b5038abd3d22eed2ede4cd46793d89565,comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel(),guarded_nullable_use

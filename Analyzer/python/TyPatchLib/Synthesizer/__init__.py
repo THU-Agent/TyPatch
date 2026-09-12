@@ -1,0 +1,1 @@
+"""Patch → typestate IR synthesizer."""

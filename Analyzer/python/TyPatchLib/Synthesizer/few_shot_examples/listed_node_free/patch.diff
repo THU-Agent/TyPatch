@@ -1,0 +1,8 @@
+diff --git a/drivers/dma/idxd/dma.c b/drivers/dma/idxd/dma.c
+@@
+ 	rc = dma_async_device_channel_register(dma, chan, NULL);
+ 	if (rc < 0) {
++		list_del(&chan->device_node);
+ 		kfree(idxd_chan);
+ 		return rc;
+ 	}

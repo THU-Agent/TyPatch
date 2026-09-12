@@ -1,0 +1,2 @@
+# Fixture patches preserve their original indentation and are not source files.
+*.diff -whitespace

@@ -1,0 +1,68 @@
+{
+  "version": "0.5",
+  "bug": {
+    "key": "double_free_store_null",
+    "name": "double-free after stale field cleanup",
+    "description": "The same stored pointer is freed by two cleanup calls unless the first free is followed by a NULL reset."
+  },
+  "events": [
+    {
+      "name": "CallFree",
+      "kind": "Call",
+      "description": "kfree consumes the tracked pointer",
+      "role": "release",
+      "bindings": [{"func": "kfree", "arg": 0}]
+    },
+    {
+      "name": "StoreNull",
+      "kind": "StoreNull",
+      "description": "the fix clears the tracked pointer after free",
+      "role": "guard"
+    }
+  ],
+  "fsm": {
+    "states": ["Init", "Freed", "DoubleFree"],
+    "initial": "Init",
+    "transitions": {
+      "Init": {
+        "CallFree": "Freed",
+        "StoreNull": "Init"
+      },
+      "Freed": {
+        "CallFree": "DoubleFree",
+        "StoreNull": "Init"
+      },
+      "DoubleFree": {
+        "CallFree": "DoubleFree",
+        "StoreNull": "DoubleFree"
+      }
+    },
+    "merges": [
+      {"a": "Init", "b": "Freed", "result": "Freed"}
+    ],
+    "state_roles": {
+      "Init": "init",
+      "Freed": "danger",
+      "DoubleFree": "bug"
+    }
+  },
+  "trigger": {
+    "bug_state": "DoubleFree",
+    "key_events": ["CallFree", "CallFree"],
+    "sliced_events": ["CallFree", "StoreNull"]
+  },
+  "context": {
+    "start_events": ["CallFree"],
+    "end_events": ["CallFree"]
+  },
+  "modeling": "typestate_protocol",
+  "protocol_semantics": {
+    "guard_semantics": "none",
+    "exit_semantics": "any_return"
+  },
+  "path_semantics": {
+    "require_same_path": true,
+    "source_visibility": "stable",
+    "require_distinct_key_locations": true
+  }
+}

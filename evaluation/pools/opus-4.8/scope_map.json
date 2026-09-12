@@ -1,0 +1,2224 @@
+{
+  "03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable devm_kasprintf return dereference",
+    "concrete_anchors": [
+      "devm_kasprintf"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "0c66b0da006415880444ec821e3cb66a89273865": {
+    "anchor_target_ids": [
+      92,
+      166,
+      212,
+      308,
+      553
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/block/built-in.a",
+      "/artifact/data/linux-v6.16/kernel/bpf/built-in.a",
+      "/artifact/data/linux-v6.16/kernel/cgroup/built-in.a",
+      "/artifact/data/linux-v6.16/mm/built-in.a",
+      "/artifact/data/linux-v6.16/net/netfilter/built-in.a"
+    ],
+    "bug_name": "cgroup double-put on sub-sched abort path",
+    "concrete_anchors": [
+      "cgroup_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule fires only where cgroup_put() is called, and this function's textual occurrences are already fully captured by the deterministic module floor (block, kernel/bpf, kernel/cgroup, mm, net/netfilter). cgroup_put is an exported cgroup-subsystem API; a double-put on an abort path requires an explicit cgroup_put call site, so the bug literally cannot fire in modules that never call it. Since the"
+    },
+    "rare_anchors": [
+      "cgroup_put"
+    ],
+    "source": "provenance"
+  },
+  "107a4cb0d47e735830f852d83970d5c81f8e1e08": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "__free_page",
+      "__free_pages"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1358126fbed104e5657955d3ba029b283687ba02": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "__irq_domain_alloc_fwnode",
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "The anchor functions irq_domain_alloc_named_fwnode / __irq_domain_alloc_fwnode return a heap-allocated fwnode_handle that must be released with irq_domain_free_fwnode on every error path. This alloc/free pairing is a generic API consumable by any driver that sets up an IRQ domain (GPIO, pinctrl, clk, SoC platform drivers, PCI/MSI controllers, sound, media, etc.), and error-path leaks of the fwnode"
+    },
+    "rare_anchors": [
+      "__irq_domain_alloc_fwnode",
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "source": "llm-widened"
+  },
+  "145f820dcbb2cced374f2532f8a61a44dce4a615": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "change-notify replay double-free",
+    "concrete_anchors": [
+      "free_rsp_buf"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor function free_rsp_buf is a helper defined and used exclusively within the SMB client subsystem (fs/smb/client), tied to the SMB2/SMB3 response buffer allocation lifecycle. The change-notify replay double-free is specific to the SMB2 change-notify command handling and its response buffer freeing convention; this exact API and bug pattern cannot fire in any other kernel module because fre"
+    },
+    "rare_anchors": [
+      "free_rsp_buf"
+    ],
+    "source": "provenance"
+  },
+  "148cd4873115feb266c002d4d4618ea7f14342d9": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "of_node_get",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "14ad4c10d5bdd413ff9a914260e89b5f54b7a2c7": {
+    "anchor_target_ids": [
+      1124
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/usb/typec/ucsi/built-in.a"
+    ],
+    "bug_name": "nullable cci parameter dereference",
+    "concrete_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule anchors on ucsi_sync_control_common, a UCSI-specific function whose signature carries the nullable cci parameter. This bug is tied to the UCSI driver API contract (the cci out-parameter being optionally NULL), so the pattern cannot fire outside code that calls or implements this specific function. All matched functions reside in drivers/usb/typec/ucsi, and no sibling subsystem shares this"
+    },
+    "rare_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "source": "provenance"
+  },
+  "16e088016f38cf728a0de709c3335cc5a3850476": {
+    "anchor_target_ids": [
+      324,
+      553,
+      642
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/openvswitch/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule fires only on the paired nf_connlabels_get/nf_connlabels_put API, which is exported specifically by net/netfilter/nf_conntrack_labels.c. These distinctive anchor functions are the required trigger, so the error-path leak (get without matching put on failure) can only occur in the exact modules that call this API. The deterministic floor already captures every caller site (net/netfilter, n"
+    },
+    "rare_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "source": "provenance"
+  },
+  "188e0fa5a679570ea35474575e724d8211423d17": {
+    "anchor_target_ids": [
+      219,
+      226,
+      244,
+      263,
+      267,
+      269,
+      302,
+      303,
+      313,
+      317,
+      324,
+      333,
+      336,
+      341,
+      343,
+      344,
+      347,
+      362,
+      363,
+      364,
+      365,
+      368,
+      372,
+      385,
+      386,
+      393,
+      396,
+      398,
+      402,
+      406,
+      408,
+      409,
+      413,
+      415,
+      421,
+      425,
+      429,
+      450,
+      451,
+      460,
+      469,
+      485,
+      497,
+      503,
+      505,
+      512,
+      553,
+      571,
+      576,
+      577,
+      578,
+      586,
+      592,
+      595,
+      596,
+      604,
+      607,
+      610,
+      611,
+      616,
+      620,
+      621,
+      623,
+      625,
+      626,
+      630,
+      631,
+      635,
+      636,
+      638,
+      640,
+      641,
+      642,
+      644,
+      646,
+      647,
+      649,
+      651,
+      652,
+      654,
+      658,
+      660,
+      661,
+      663,
+      667,
+      686,
+      689,
+      695,
+      699,
+      702,
+      705,
+      712,
+      715,
+      720,
+      728,
+      734,
+      736,
+      738,
+      788,
+      791,
+      795,
+      804,
+      805,
+      808,
+      809,
+      810,
+      811,
+      813,
+      817,
+      828,
+      836,
+      840,
+      841,
+      850,
+      870,
+      871,
+      875,
+      876,
+      879,
+      880,
+      881,
+      883,
+      884,
+      885,
+      886,
+      889,
+      890,
+      892,
+      896,
+      899,
+      903,
+      904,
+      905,
+      908,
+      913,
+      914,
+      915,
+      916,
+      917,
+      919,
+      921,
+      922,
+      923,
+      924,
+      925,
+      928,
+      929,
+      931,
+      934,
+      936,
+      938,
+      941,
+      944,
+      945,
+      946,
+      948,
+      949,
+      950,
+      951,
+      953,
+      954,
+      959,
+      960,
+      965,
+      968,
+      969,
+      970,
+      971,
+      972,
+      973,
+      974,
+      975,
+      976,
+      977,
+      978,
+      982,
+      990,
+      992,
+      994,
+      996,
+      997,
+      1003,
+      1004,
+      1016,
+      1018,
+      1020,
+      1042,
+      1050,
+      1054,
+      1055,
+      1063,
+      1071,
+      1072,
+      1075,
+      1077,
+      1080,
+      1088,
+      1090,
+      1092,
+      1095,
+      1103,
+      1109,
+      1117,
+      1120,
+      1121,
+      1128,
+      1137,
+      1143,
+      1145,
+      1147,
+      1148,
+      1151,
+      1154,
+      1155,
+      1156,
+      1163,
+      1175,
+      1178,
+      1180,
+      1187,
+      1191,
+      1196,
+      1197,
+      1203,
+      1204,
+      1206,
+      1207,
+      1209,
+      1210,
+      1211,
+      1213,
+      1215,
+      1216,
+      1219,
+      1221,
+      1222,
+      1229,
+      1230,
+      1233,
+      1235,
+      1236,
+      1238,
+      1240,
+      1241,
+      1243,
+      1244,
+      1251,
+      1252,
+      1253,
+      1255,
+      1256,
+      1258,
+      1270,
+      1272,
+      1276,
+      1281,
+      1282,
+      1285,
+      1287,
+      1288,
+      1289,
+      1290,
+      1296,
+      1300,
+      1309,
+      1311,
+      1314,
+      1317,
+      1318,
+      1322,
+      1323,
+      1325,
+      1330,
+      1339,
+      1341,
+      1345,
+      1348,
+      1350,
+      1352,
+      1356,
+      1357,
+      1359,
+      1360,
+      1365,
+      1369,
+      1371,
+      1374,
+      1375,
+      1376,
+      1378,
+      1380,
+      1381,
+      1382,
+      1383,
+      1384,
+      1385,
+      1386,
+      1387,
+      1388,
+      1391,
+      1393,
+      1395,
+      1400,
+      1402,
+      1406,
+      1409,
+      1411,
+      1414,
+      1415,
+      1416,
+      1419,
+      1420,
+      1421,
+      1422,
+      1423,
+      1424,
+      1425,
+      1428,
+      1429,
+      1430,
+      1433,
+      1439,
+      1441,
+      1444,
+      1448,
+      1449,
+      1450,
+      1453,
+      1456,
+      1459,
+      1461,
+      1462,
+      1463,
+      1467,
+      1469,
+      1470,
+      1471,
+      1473,
+      1474,
+      1476,
+      1477,
+      1478,
+      1479,
+      1480,
+      1484,
+      1485,
+      1488,
+      1490,
+      1494,
+      1495,
+      1497,
+      1500,
+      1501,
+      1502,
+      1503,
+      1508,
+      1512,
+      1513,
+      1515,
+      1516,
+      1519,
+      1521,
+      1522,
+      1524,
+      1526,
+      1532,
+      1536,
+      1540,
+      1542,
+      1544,
+      1545,
+      1547,
+      1548,
+      1549,
+      1552,
+      1553,
+      1555,
+      1557,
+      1562,
+      1567,
+      1569,
+      1573,
+      1574,
+      1575,
+      1576,
+      1577,
+      1578,
+      1579,
+      1583,
+      1584,
+      1590,
+      1591,
+      1592,
+      1594,
+      1595,
+      1596,
+      1597,
+      1600,
+      1601,
+      1603,
+      1604,
+      1606,
+      1607,
+      1609,
+      1610,
+      1611,
+      1612,
+      1613,
+      1615,
+      1616,
+      1618,
+      1619,
+      1620,
+      1621,
+      1622,
+      1627,
+      1628,
+      1629,
+      1631,
+      1632,
+      1634,
+      1637,
+      1645,
+      1647,
+      1648,
+      1653,
+      1654,
+      1655,
+      1656,
+      1657,
+      1658,
+      1659,
+      1660,
+      1662,
+      1663,
+      1664,
+      1665,
+      1666,
+      1667,
+      1669,
+      1670,
+      1671,
+      1672,
+      1673,
+      1674,
+      1676,
+      1677,
+      1679,
+      1680,
+      1681,
+      1682,
+      1687,
+      1688,
+      1689,
+      1698,
+      1706,
+      1719,
+      1722,
+      1725,
+      1729,
+      1736,
+      1739,
+      1752,
+      1753,
+      1755,
+      1756,
+      1757,
+      1758,
+      1759,
+      1761,
+      1762,
+      1764,
+      1768,
+      1772,
+      1783,
+      1786,
+      1788
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/bluetooth/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/core/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/bnxt_re/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/cxgb4/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/efa/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/erdma/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/hfi1/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/hns/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/irdma/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/mana/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/mlx4/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/mlx5/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/mthca/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/ocrdma/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/qedr/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/qib/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/usnic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/hw/vmw_pvrdma/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/sw/rdmavt/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/sw/rxe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/sw/siw/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/ipoib/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/iser/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/isert/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/opa_vnic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/rtrs/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/srp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/infiniband/ulp/srpt/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/isdn/hardware/mISDN/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/isdn/mISDN/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/arcnet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/bonding/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/caif/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/c_can/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/cc770/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/ctucanfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/dev/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/esd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/flexcan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/ifi_canfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/m_can/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/peak_canfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/rcar/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/rockchip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/sja1000/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/slcan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/softing/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/spi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/spi/mcp251xfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/usb/etas_es58x/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/usb/kvaser_usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/can/usb/peak_usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/b53/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/hirschmann/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/microchip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/mv88e6xxx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/ocelot/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/qca/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/realtek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/sja1105/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/dsa/xrs700x/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/3com/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/8390/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/actions/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/adaptec/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/adi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/agere/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/airoha/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/alacritech/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/alteon/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/altera/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/amazon/ena/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/amd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/amd/pds_core/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/amd/xgbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/apm/xgene-v2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/apm/xgene/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/aquantia/atlantic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/arc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/asix/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/atheros/alx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/atheros/atl1c/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/atheros/atl1e/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/atheros/atlx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/atheros/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/asp2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/bnx2x/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/bnxt/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/genet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/brocade/bna/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cadence/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/calxeda/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cavium/common/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cavium/liquidio/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cavium/thunder/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/cxgb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/cxgb3/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/cxgb4/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/cxgb4vf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/inline_crypto/chtls/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/chelsio/libcxgb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cirrus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cisco/enic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/cortina/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/davicom/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/dec/tulip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/dlink/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/emulex/benet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/engleder/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/ezchip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/freescale/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/freescale/dpaa/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/freescale/dpaa2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/freescale/enetc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/freescale/fman/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/fujitsu/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/fungible/funcore/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/fungible/funeth/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/google/gve/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/hisilicon/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/hisilicon/hibmcge/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/hisilicon/hns/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/hisilicon/hns3/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/huawei/hinic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/huawei/hinic3/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/e1000/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/e1000e/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/fm10k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/i40e/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/iavf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/ice/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/idpf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/igb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/igbvf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/igc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/ixgbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/ixgbevf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/libeth/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/intel/libie/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/litex/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/mvpp2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/octeon_ep/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/octeon_ep_vf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/octeontx2/af/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/octeontx2/nic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/marvell/prestera/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mediatek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlx4/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlx5/core/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxbf_gige/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxfw/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxsw/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/meta/fbnic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/micrel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/fdma/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/lan865x/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/lan966x/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/sparx5/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microchip/vcap/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/microsoft/mana/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mscc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/myricom/myri10ge/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/natsemi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/neterion/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/netronome/nfp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/ni/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/nvidia/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/nxp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/oki-semi/pch_gbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/packetengines/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/pensando/ionic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qlogic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qlogic/netxen/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qlogic/qed/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qlogic/qede/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qlogic/qlcnic/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qualcomm/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qualcomm/emac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/qualcomm/rmnet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/rdc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/realtek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/realtek/rtase/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/renesas/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/rocker/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/samsung/sxgbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sfc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sfc/falcon/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sfc/siena/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/silan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sis/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/smsc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/socionext/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/stmicro/stmmac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sun/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/sunplus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/synopsys/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/tehuti/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/ti/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/vertexcom/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/via/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/wangxun/libwx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/wangxun/ngbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/wangxun/txgbe/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/wiznet/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/xilinx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/xircom/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/fddi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/fddi/skfp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/fjes/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/hamradio/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/hippi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/hyperv/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ieee802154/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ipa/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ipvlan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/mctp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/mdio/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/netdevsim/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ovpn/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/pcs/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/aquantia/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/mediatek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/mscc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/qcom/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/phy/realtek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/plip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/ppp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/pse-pd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/slip/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/team/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/thunderbolt/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/vmxnet3/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/vxlan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wan/framer/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wan/framer/pef2256/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireguard/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/admtek/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ar5523/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath10k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath11k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath12k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath5k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath6kl/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/ath9k/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/carl9170/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/wcn36xx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/wil6210/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/atmel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/broadcom/b43/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/broadcom/b43legacy/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/broadcom/brcm80211/brcmfmac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/broadcom/brcm80211/brcmsmac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/broadcom/brcm80211/brcmutil/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/ipw2x00/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlegacy/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/dvm/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/mld/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/mld/tests/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/mvm/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/mvm/tests/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intel/iwlwifi/tests/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intersil/p54/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/marvell/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/marvell/libertas/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/marvell/libertas_tf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/marvell/mwifiex/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7603/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7615/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt76x0/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt76x2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7915/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7921/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7925/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt76/mt7996/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/mediatek/mt7601u/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/microchip/wilc1000/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/purelifi/plfxlc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/quantenna/qtnfmac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ralink/rt2x00/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtl818x/rtl8180/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtl818x/rtl8187/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtl8xxxu/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/btcoexist/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192c/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192d/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192de/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192du/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8192se/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8723be/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8723com/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtw88/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/realtek/rtw89/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/rsi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/silabs/wfx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/st/cw1200/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ti/wl1251/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ti/wl12xx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ti/wl18xx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ti/wlcore/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/virtual/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/zydas/zd1211rw/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wwan/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wwan/iosm/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wwan/t7xx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/xen-netback/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/fdp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/microread/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/nfcmrvl/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/nxp-nci/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/pn533/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/pn544/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/s3fwrn5/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/st-nci/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/st21nfca/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/nfc/st95hf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/axis-fifo/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/fbtft/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/agilent_82350b/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/agilent_82357a/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/cb7210/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/cec/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/common/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/eastwood/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/fmh_gpib/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/gpio/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/hp_82335/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/hp_82341/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/ines/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/lpvo_usb_gpib/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/nec7210/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/ni_usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/pc2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/tms9914/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/gpib/tnt4882/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/greybus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/iio/accel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/iio/adc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/iio/addac/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/iio/frequency/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/iio/impedance-analyzer/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/atomisp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/atomisp/i2c/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/av7110/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/deprecated/atmel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/imx/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/ipu3/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/max96712/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/meson/vdec/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/rkvdec/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/starfive/camss/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/sunxi/cedrus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/sunxi/sun6i-isp/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/media/tegra-video/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/most/dim2/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/most/i2c/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/most/net/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/most/video/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/octeon/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/sm750fb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/vc04_services/bcm2835-audio/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/vc04_services/bcm2835-camera/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/vc04_services/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/vc04_services/vchiq-mmal/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/vme_user/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/gadget/function/built-in.a",
+      "/artifact/data/linux-v6.16/net/6lowpan/built-in.a",
+      "/artifact/data/linux-v6.16/net/802/built-in.a",
+      "/artifact/data/linux-v6.16/net/8021q/built-in.a",
+      "/artifact/data/linux-v6.16/net/9p/built-in.a",
+      "/artifact/data/linux-v6.16/net/appletalk/built-in.a",
+      "/artifact/data/linux-v6.16/net/atm/built-in.a",
+      "/artifact/data/linux-v6.16/net/ax25/built-in.a",
+      "/artifact/data/linux-v6.16/net/batman-adv/built-in.a",
+      "/artifact/data/linux-v6.16/net/bluetooth/bnep/built-in.a",
+      "/artifact/data/linux-v6.16/net/bluetooth/built-in.a",
+      "/artifact/data/linux-v6.16/net/bluetooth/hidp/built-in.a",
+      "/artifact/data/linux-v6.16/net/bluetooth/rfcomm/built-in.a",
+      "/artifact/data/linux-v6.16/net/bpf/built-in.a",
+      "/artifact/data/linux-v6.16/net/bridge/built-in.a",
+      "/artifact/data/linux-v6.16/net/bridge/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/built-in.a",
+      "/artifact/data/linux-v6.16/net/caif/built-in.a",
+      "/artifact/data/linux-v6.16/net/can/built-in.a",
+      "/artifact/data/linux-v6.16/net/can/j1939/built-in.a",
+      "/artifact/data/linux-v6.16/net/ceph/built-in.a",
+      "/artifact/data/linux-v6.16/net/core/built-in.a",
+      "/artifact/data/linux-v6.16/net/dcb/built-in.a",
+      "/artifact/data/linux-v6.16/net/devlink/built-in.a",
+      "/artifact/data/linux-v6.16/net/dns_resolver/built-in.a",
+      "/artifact/data/linux-v6.16/net/dsa/built-in.a",
+      "/artifact/data/linux-v6.16/net/ethernet/built-in.a",
+      "/artifact/data/linux-v6.16/net/ethtool/built-in.a",
+      "/artifact/data/linux-v6.16/net/handshake/built-in.a",
+      "/artifact/data/linux-v6.16/net/hsr/built-in.a",
+      "/artifact/data/linux-v6.16/net/ieee802154/6lowpan/built-in.a",
+      "/artifact/data/linux-v6.16/net/ieee802154/built-in.a",
+      "/artifact/data/linux-v6.16/net/ife/built-in.a",
+      "/artifact/data/linux-v6.16/net/ipv4/built-in.a",
+      "/artifact/data/linux-v6.16/net/ipv4/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/ipv6/built-in.a",
+      "/artifact/data/linux-v6.16/net/ipv6/ila/built-in.a",
+      "/artifact/data/linux-v6.16/net/ipv6/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/kcm/built-in.a",
+      "/artifact/data/linux-v6.16/net/key/built-in.a",
+      "/artifact/data/linux-v6.16/net/l2tp/built-in.a",
+      "/artifact/data/linux-v6.16/net/l3mdev/built-in.a",
+      "/artifact/data/linux-v6.16/net/lapb/built-in.a",
+      "/artifact/data/linux-v6.16/net/llc/built-in.a",
+      "/artifact/data/linux-v6.16/net/mac80211/built-in.a",
+      "/artifact/data/linux-v6.16/net/mac80211/tests/built-in.a",
+      "/artifact/data/linux-v6.16/net/mac802154/built-in.a",
+      "/artifact/data/linux-v6.16/net/mctp/built-in.a",
+      "/artifact/data/linux-v6.16/net/mpls/built-in.a",
+      "/artifact/data/linux-v6.16/net/mptcp/built-in.a",
+      "/artifact/data/linux-v6.16/net/ncsi/built-in.a",
+      "/artifact/data/linux-v6.16/net/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/netfilter/ipset/built-in.a",
+      "/artifact/data/linux-v6.16/net/netfilter/ipvs/built-in.a",
+      "/artifact/data/linux-v6.16/net/netlabel/built-in.a",
+      "/artifact/data/linux-v6.16/net/netlink/built-in.a",
+      "/artifact/data/linux-v6.16/net/netrom/built-in.a",
+      "/artifact/data/linux-v6.16/net/nfc/built-in.a",
+      "/artifact/data/linux-v6.16/net/nfc/hci/built-in.a",
+      "/artifact/data/linux-v6.16/net/nfc/nci/built-in.a",
+      "/artifact/data/linux-v6.16/net/nsh/built-in.a",
+      "/artifact/data/linux-v6.16/net/openvswitch/built-in.a",
+      "/artifact/data/linux-v6.16/net/packet/built-in.a",
+      "/artifact/data/linux-v6.16/net/phonet/built-in.a",
+      "/artifact/data/linux-v6.16/net/psample/built-in.a",
+      "/artifact/data/linux-v6.16/net/qrtr/built-in.a",
+      "/artifact/data/linux-v6.16/net/rds/built-in.a",
+      "/artifact/data/linux-v6.16/net/rfkill/built-in.a",
+      "/artifact/data/linux-v6.16/net/rose/built-in.a",
+      "/artifact/data/linux-v6.16/net/rxrpc/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a",
+      "/artifact/data/linux-v6.16/net/sctp/built-in.a",
+      "/artifact/data/linux-v6.16/net/shaper/built-in.a",
+      "/artifact/data/linux-v6.16/net/smc/built-in.a",
+      "/artifact/data/linux-v6.16/net/strparser/built-in.a",
+      "/artifact/data/linux-v6.16/net/sunrpc/auth_gss/built-in.a",
+      "/artifact/data/linux-v6.16/net/sunrpc/built-in.a",
+      "/artifact/data/linux-v6.16/net/sunrpc/xprtrdma/built-in.a",
+      "/artifact/data/linux-v6.16/net/switchdev/built-in.a",
+      "/artifact/data/linux-v6.16/net/tipc/built-in.a",
+      "/artifact/data/linux-v6.16/net/tls/built-in.a",
+      "/artifact/data/linux-v6.16/net/unix/built-in.a",
+      "/artifact/data/linux-v6.16/net/vmw_vsock/built-in.a",
+      "/artifact/data/linux-v6.16/net/wireless/built-in.a",
+      "/artifact/data/linux-v6.16/net/wireless/tests/built-in.a",
+      "/artifact/data/linux-v6.16/net/x25/built-in.a",
+      "/artifact/data/linux-v6.16/net/xdp/built-in.a",
+      "/artifact/data/linux-v6.16/net/xfrm/built-in.a"
+    ],
+    "bug_name": "nullable __pskb_copy return dereference",
+    "concrete_anchors": [
+      "__pskb_copy",
+      "__pskb_copy_fclone"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "widen_prefix",
+      "prefixes": [
+        "net/",
+        "drivers/net/",
+        "drivers/nfc/",
+        "drivers/bluetooth/",
+        "drivers/infiniband/",
+        "drivers/s390/net/",
+        "drivers/isdn/",
+        "drivers/staging/",
+        "drivers/usb/gadget/function/"
+      ],
+      "reason": "The rule fires on any dereference of the return value of __pskb_copy/__pskb_copy_fclone without a NULL check. These are exported SKB helpers (EXPORT_SYMBOL) usable by any networking-related code, not confined to the current subsystems. Any new caller in another net protocol or a device/network driver could dereference the returned sk_buff* (which is NULL on allocation failure) without checking, so"
+    },
+    "rare_anchors": [
+      "__pskb_copy",
+      "__pskb_copy_fclone"
+    ],
+    "source": "llm-widened"
+  },
+  "1aec30021edd410b986c156f195f3d23959a9d11": {
+    "anchor_target_ids": [
+      150,
+      170,
+      740
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/ext4/built-in.a",
+      "/artifact/data/linux-v6.16/fs/jbd2/built-in.a",
+      "/artifact/data/linux-v6.16/fs/ocfs2/built-in.a"
+    ],
+    "bug_name": "publish-before-initialization race",
+    "concrete_anchors": [
+      "jbd2_journal_init_jbd_inode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor jbd2_journal_init_jbd_inode is a JBD2-specific API. Callers of this exact function only exist in filesystems that use the JBD2 journaling layer (ext4, ocfs2) plus jbd2 itself. The publish-before-initialization race is tied to this specific initialization API and its call sites, all of which textually appear in the listed modules. A generic publish-before-init pattern would need a differ"
+    },
+    "rare_anchors": [
+      "jbd2_journal_init_jbd_inode"
+    ],
+    "source": "provenance"
+  },
+  "1c1e0fc88d6ef65bf15d517853251f75ab9d18c3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak of domain generic chips",
+    "concrete_anchors": [
+      "irq_alloc_domain_generic_chips",
+      "irq_domain_remove",
+      "irq_domain_remove_generic_chips"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1c6267a1d5cf4c73b656f8181b310cbbb3e4767b": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "cifs_buf_get",
+      "cifs_small_buf_get"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions cifs_buf_get and cifs_small_buf_get are CIFS-specific buffer allocators defined and used exclusively in fs/smb/client. The rule matches on these exact function names, so it can only fire where these allocators are called. Sibling filesystems use entirely different allocation APIs (e.g. kmalloc, kmem_cache_alloc) that would not textually match these rare anchors, so the error-p"
+    },
+    "rare_anchors": [
+      "cifs_buf_get",
+      "cifs_small_buf_get"
+    ],
+    "source": "provenance"
+  },
+  "21e9a838f505178e109ccb3bf19d7808eb0326f4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kzalloc return dereference",
+    "concrete_anchors": [
+      "devm_kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "26490a375cb9be9bac96b5171610fd85ca6c2305": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "vfree",
+      "vzalloc",
+      "vzalloc_noprof"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "27880b0b0d35ad1c98863d09788254e36f874968": {
+    "anchor_target_ids": [
+      324,
+      625
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/ife/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "null-pointer-dereference",
+    "concrete_anchors": [
+      "ife_encode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor function ife_encode is a specific IFE (Inter-FE) action encapsulation API defined in net/ife and consumed by the act_ife TC action in net/sched. It is a unique named symbol with no analogous siblings elsewhere in the kernel; the null-pointer-dereference rule is keyed on this exact rare function, so it literally cannot fire outside these two modules. Keeping scope is safe."
+    },
+    "rare_anchors": [
+      "ife_encode"
+    ],
+    "source": "provenance"
+  },
+  "28dd788382c43b330480f57cd34cde0840896743": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "28df30e61b46a33d1f0bb60757747396886ef687": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path lock imbalance",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "2c1c805c65fb7dc7524e20376d6987721e73a0b1": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free of stale mode pointer after modelist destroy",
+    "concrete_anchors": [
+      "fb_destroy_modelist",
+      "fbcon_delete_modelist"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3358995b1a7f9dcb52a56ec8251570d71024dad0": {
+    "anchor_target_ids": [
+      1003
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/bnxt/built-in.a"
+    ],
+    "bug_name": "use-after-free via wrong teardown order",
+    "concrete_anchors": [
+      "bnxt_free_hwrm_resources",
+      "hwrm_dma_pool"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions bnxt_free_hwrm_resources and hwrm_dma_pool are private symbols specific to the Broadcom bnxt driver's HWRM firmware-messaging DMA pool. These identifiers are not shared APIs and appear only within drivers/net/ethernet/broadcom/bnxt. The use-after-free via wrong teardown order rule as written matches on these exact rare symbols, so it literally cannot fire outside this driver. "
+    },
+    "rare_anchors": [
+      "bnxt_free_hwrm_resources",
+      "hwrm_dma_pool"
+    ],
+    "source": "provenance"
+  },
+  "34b9a83c50660148bde01cde16451dbe78369749": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "kref_get_unless_zero",
+      "nvmet_ctrl_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3b09ff54114566864eea59020f6b69c5bb325b9d": {
+    "anchor_target_ids": [
+      654
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/qrtr/built-in.a"
+    ],
+    "bug_name": "error-path node refcount leak",
+    "concrete_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions qrtr_node_lookup and qrtr_node_release are QRTR-specific APIs defined only in net/qrtr; the refcount object (struct qrtr_node) and its get/put semantics exist nowhere else. The error-path refcount leak on this specific node type literally cannot occur outside these functions, so restricting to net/qrtr is safe."
+    },
+    "rare_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "source": "provenance"
+  },
+  "41782770be567abc6509169d0ffdada31c783a66": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "rhashtable_destroy",
+      "rhashtable_init"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "41c8c1d65b32beacd8d916a22457b4f6e47f45af": {
+    "anchor_target_ids": [
+      1473
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxsw/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions mlxsw_sp_lag_get and mlxsw_sp_lag_put are driver-private symbols exclusive to the Mellanox mlxsw Spectrum driver; they are defined and referenced only within drivers/net/ethernet/mellanox/mlxsw. The rule matches on these exact function names as the get/put refcount pair whose error-path leak it detects, so it is textually incapable of firing on any translation unit that does n"
+    },
+    "rare_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "source": "provenance"
+  },
+  "4373cfa38ead58f980362c841b0d0bdf8c4d956c": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "The rule matches on power_supply_get_by_name / power_supply_put, which follow a get/put refcount pattern where the get acquires a reference that must be released on every error path. This leak pattern is not confined to any subsystem: power_supply_get_by_name is a generic power-supply framework API callable from any driver that references a power supply (battery, USB, PHY, platform, thermal, hwmon"
+    },
+    "rare_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "source": "llm-widened"
+  },
+  "487767bff572d46f7c37ad846c4078f6d6c9cc55": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized return variable",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "4c61f678a468768afd45c3d9ac697f8f55aa04eb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path lock leak",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "4c7a548a70a44269266858f65c3b5fc9c3ace057": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked snd_ctl_new1 return dereference",
+    "concrete_anchors": [
+      "snd_ctl_new1"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "4e8eb6952aa6749726c6c3763ae0032a6332c24f": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "irq_domain_create_legacy",
+      "irq_domain_remove"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "53442aad1d5790932ed82220bd3c9e1ee9388b83": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "kfree",
+      "ofdpa_fdb_tbl_find"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "541dfb49dcb80c2509e030842de77adfb77820f5": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-put of_node reference",
+    "concrete_anchors": [
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "606c0826bd90384a54571c0c5475ca41f50164ea": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime PM usage-counter leak on remove",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6ae67dcac742529210a23dac6c9a7de1acfb52a3": {
+    "anchor_target_ids": [
+      145
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/arch/x86/kvm/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak of faulted page",
+    "concrete_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "widen_prefix",
+      "prefixes": [
+        "arch/x86/kvm/",
+        "arch/arm64/kvm/",
+        "arch/riscv/kvm/",
+        "arch/powerpc/kvm/",
+        "arch/s390/kvm/",
+        "arch/loongarch/kvm/",
+        "arch/mips/kvm/",
+        "virt/kvm/"
+      ],
+      "reason": "The anchor functions __kvm_faultin_pfn and kvm_release_faultin_page are part of the generic KVM MMU faultin API. The paired acquire/release pattern (faultin a pfn, then release it on error paths) is used across all KVM architecture backends, not just x86. The error-path leak of a faulted page can occur in any arch's KVM MMU code that calls kvm_faultin_pfn and must release the page on failure. Rest"
+    },
+    "rare_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "source": "llm-widened"
+  },
+  "6af3330ec5d5fb8c06c04eb520a71cf73ea5a765": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after failed queue setup",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6d827ade51a24e18d81afb9f32756d339520a14c": {
+    "anchor_target_ids": [
+      1514
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/crypto/amlogic/built-in.a"
+    ],
+    "bug_name": "double cleanup of chanlist on probe error path",
+    "concrete_anchors": [
+      "meson_allocate_chanlist",
+      "meson_free_chanlist"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule fires specifically on meson_allocate_chanlist and meson_free_chanlist, which are driver-private symbols unique to the Amlogic (meson) crypto driver. These exact function names exist only in drivers/crypto/amlogic; the double-cleanup-of-chanlist bug is tied to this driver's specific probe/error-path allocation of a chanlist array and its paired free helper. No sibling module defines these "
+    },
+    "rare_anchors": [
+      "meson_allocate_chanlist",
+      "meson_free_chanlist"
+    ],
+    "source": "provenance"
+  },
+  "6e9cab2247e5b243ae2d907ce7c948a8a9c8d61a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "Error-path resource leaks are a generic bug class, not tied to the dell_laptop notifier API. The specific anchor functions here are just where this instance was found, but the same pattern (acquiring a resource then failing to release it on an error return) can occur in any kernel subsystem using any allocation/registration API. Restricting to the dell driver would miss the vast majority of real i"
+    },
+    "rare_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "source": "llm-widened"
+  },
+  "6ea0ce3a19f9c37a014099e2b0a46b27fa164564": {
+    "anchor_target_ids": [
+      650,
+      1083,
+      1482
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/crypto/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/host1x/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions host1x_job_alloc and host1x_job_put are host1x-specific APIs (managing struct host1x_job lifecycle). The rule matches on these exact symbol names, so it can only fire in code that textually calls them. Grep-derived module floor already captures every caller: the host1x core (drivers/gpu/host1x), and its two consumers (drivers/gpu/drm/tegra, drivers/crypto/tegra). No other kern"
+    },
+    "rare_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "source": "provenance"
+  },
+  "71abf20b28ff87fee6951ec2218d5ce7969c4e87": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "null-pointer-dereference",
+    "concrete_anchors": [
+      "skb_clone"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7886054b06f762f62054957a8f6de0f14e6b7541": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of zeropage on DMA setup failure",
+    "concrete_anchors": [
+      "free_page"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7c0ace54887872ebd99fefdfe85d273295a09426": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path lock leak",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock",
+      "spin_lock",
+      "spin_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7cb1c5b32a2bfde961fff8d5204526b609bcb30a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free on video register failure",
+    "concrete_anchors": [
+      "video_device_release"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "81ec618f59415bdcf3e8989e2691c1f240be27fb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "pci_dev_put",
+      "pci_get_domain_bus_and_slot"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "8318e04ab2526b155773313b66a1542476ce1106": {
+    "anchor_target_ids": [
+      600
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/sound/soc/qcom/qdsp6/built-in.a"
+    ],
+    "bug_name": "nullable topology parse return dereference",
+    "concrete_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule fires only on audioreach_parse_common_tokens, an AudioReach-specific token-parsing helper defined and used solely within the Qualcomm qdsp6 audio driver. The nullable-return-dereference pattern is tied to this exact function's contract (returning a possibly-NULL parsed topology node that callers dereference), which does not exist as a shared API elsewhere. No sibling modules expose an ide"
+    },
+    "rare_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "source": "provenance"
+  },
+  "85a7555575a0e48f9b73db310d0d762a08a46d63": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "listed node container freed before unlink",
+    "concrete_anchors": [
+      "kfree",
+      "list_add",
+      "list_del"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "85b6256469cebdac395e7447147e06b2e151014f": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "87bd2ad568e15b90d5f7d4bcd70342d05dad649c": {
+    "anchor_target_ids": [
+      142
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/kernel/time/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions posix_cpu_timer_create and posix_cpu_timer_del are unique, specific implementations of the posix_clock k_itimer operations for CPU-time clocks, defined only in kernel/time/posix-cpu-timers.c. An error-path resource-leak rule anchored on these exact function names can only match code that textually contains them, which exists solely in kernel/time. There is no sibling API that "
+    },
+    "rare_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "source": "provenance"
+  },
+  "8a59a2d84fa3de2b4bbb8759b52e62c9c06d9d32": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized variable use",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "8d13f7a8450206e3f820cdb26e33e91d181071b4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_sync_autosuspend"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "930a9a6ee8e7ffa20af4bffbfc2bbd21d83bf81c": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable new_qname dereference in strcmp",
+    "concrete_anchors": [
+      "F2FS_CTX_INFO"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "97b17dd8266d2e26d9ee3c75a0fa34ecde6944f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime-pm usage-count leak on unbind",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9a8826fdfbcd7ed2ccf745f5d54208358d939def": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-kobject-init direct free",
+    "concrete_anchors": [
+      "kfree",
+      "kobject_init_and_add",
+      "kobject_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9c37eac31c559b079d55890d1dbe70072fec0435": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "reset_control_assert",
+      "reset_control_deassert"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9e6e7c74315095fd40f41003850690c711e44420": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path lock leak",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "a0130d682222ae21afc395aead7cd2d87e1a8358": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free via deferred devm unregister",
+    "concrete_anchors": [
+      "devm_register_netdev",
+      "unregister_netdev"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a0fe29d20e7822182e12324905af5115c1b3aed3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable ioremap return dereference",
+    "concrete_anchors": [
+      "ioremap"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a260bd22a355bcdb74cedac6ab9b10739cd2c62c": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free via publish before use",
+    "concrete_anchors": [
+      "fd_publish"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a3f3859cecacb64f18fd446271ece9a3b3f2d4de": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "kref_get",
+      "kref_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a51f025b5038abd3d22eed2ede4cd46793d89565": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "null-ptr-deref via uninitialized read_subdev->async",
+    "concrete_anchors": [
+      "async",
+      "pcl818_ai_cancel"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a6582701178a47c4d0cb2188c965c59c0c0647c8": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of dynamic-state entries via amdgpu_free_extended_power_table",
+    "concrete_anchors": [
+      "amdgpu_free_extended_power_table",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "aa7069d840dab6bef4887657b94e439c82ae985a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable dma_alloc_coherent return dereference",
+    "concrete_anchors": [
+      "dma_alloc_coherent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ab42b48f32d4c766420c3499ee9c0289b7028182": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked dma_alloc_coherent return dereference",
+    "concrete_anchors": [
+      "dma_alloc_coherent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "abfaf0eee97925905e742aa3b0b72e04a918fa9e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable kmemdup return dereference",
+    "concrete_anchors": [
+      "kmemdup",
+      "kmemdup_noprof"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "acc44cbd7727115f9381c35c2898b1b5af665ec8": {
+    "anchor_target_ids": [
+      595
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/wireless/built-in.a"
+    ],
+    "bug_name": "double-free of IE pointers when known-bss update fails",
+    "concrete_anchors": [
+      "__cfg80211_unlink_bss",
+      "cfg80211_update_known_bss"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions __cfg80211_unlink_bss and cfg80211_update_known_bss are internal to the cfg80211 BSS-list management code in net/wireless. The specific bug (double-free of IE pointers when a known-BSS update fails) is tied to the concrete memory-management contract of cfg80211's cfg80211_internal_bss/cfg80211_bss_ies structures and their refcounting/free paths, which exist only in net/wireles"
+    },
+    "rare_anchors": [
+      "__cfg80211_unlink_bss",
+      "cfg80211_update_known_bss"
+    ],
+    "source": "provenance"
+  },
+  "b0eeba527e704d6023a6cd9103f929226e326b03": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kcalloc return dereference",
+    "concrete_anchors": [
+      "devm_kcalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b4e964f84c1a44b0c63a5036efb24cf0f938db0a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar return",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "b5c7a7f452b885bfbe102bd3a057a5f496802f8b": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked kzalloc return dereference",
+    "concrete_anchors": [
+      "kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba36786b21d19082e696eda85bfcd49e7071944a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "dma_fence_get",
+      "dma_fence_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba45106342bbdd905651cb9fcefb8c11871d4c25": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "refcount_dec",
+      "refcount_inc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "badc53620fe813b3a9f727ef9526f98567c2c898": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "kref_put",
+      "nvmet_rdma_find_get_device",
+      "ref"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "bcb8889c4981fdde42d4fd2c29a77d510fe21da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "managed-lifetime double free",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c39a9a02bc5d841c116dc03c264eb9ceecde806e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of adapter object",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c849de7d8757a7af801fc4a4058f71d481d367f2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of reply skb after genlmsg_reply",
+    "concrete_anchors": [
+      "genlmsg_reply",
+      "nlmsg_free"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d189f224308c8ac3feeea8e442c99922bd18f1b2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource leak",
+    "concrete_anchors": [
+      "ida_alloc",
+      "ida_free"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d3a9a8cf2d7fd61a2f63df61f6cbc0a9bb007cc0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of pdata after device teardown release",
+    "concrete_anchors": [
+      "kfree",
+      "put_device"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d46f9f23897261da53ffbeb89d48a13982ba7d28": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "kcalloc",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak on unchecked fb_add_videomode failure",
+    "concrete_anchors": [
+      "dma_alloc_wc",
+      "dma_free_wc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "dabac51b8102e1643d8e297a8e6948dab190aa4c": {
+    "anchor_target_ids": [
+      667
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/handshake/built-in.a"
+    ],
+    "bug_name": "nullable handshake_req_next return dereference",
+    "concrete_anchors": [
+      "handshake_req_next"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "handshake_req_next is a symbol unique to net/handshake; the rule fires only where this specific function is called and dereferenced, so the bug cannot occur outside this subsystem."
+    },
+    "rare_anchors": [
+      "handshake_req_next"
+    ],
+    "source": "provenance"
+  },
+  "dc3382fffdec2c1d6df5836c88fa37b39cd8651e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable kmemdup return dereference",
+    "concrete_anchors": [
+      "__real_kmemdup",
+      "kmemdup",
+      "kmemdup_noprof"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ee895ccdf776a676655b1405d493cfcf43d157f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path clock leak",
+    "concrete_anchors": [
+      "clk_disable_unprepare",
+      "clk_prepare_enable"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "f396f4005180928cd9e15e352a6512865d3bc908": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "usb_alloc_urb",
+      "usb_free_urb"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "f63a9df7e3f9f842945d292a19d9938924f066f9": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized-scalar-use",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "f67790a0715edd292d64a104e6e294290243d16d": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "double-free of gpu memory",
+    "concrete_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule's distinctive anchor dm_helpers_free_gpu_mem is a unique symbol defined only in the amdgpu display manager (dm_helpers) code. A double-free of this specific allocation requires two textual calls to this exact function (or its paired alloc/free), which only exist under drivers/gpu/drm/amd/amdgpu. No sibling driver uses this API, so the rule literally cannot fire elsewhere; restricting to t"
+    },
+    "rare_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "source": "provenance"
+  },
+  "f9c169b51b6ce20394594ef674d6b10efba31220": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "use-after-free / double put of cfile",
+    "concrete_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions cifs_get_writable_path and smb2_compound_op are CIFS/SMB2-specific APIs. The cfile (cifsFileInfo) structure and its reference-counting lifecycle (cifsFileInfo_put / cifs_get_writable_path) exist only within fs/smb/client. A use-after-free or double-put of cfile is tied to this specific refcounting API and cannot manifest in modules that do not reference these functions or the "
+    },
+    "rare_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "source": "provenance"
+  },
+  "fa11039d6cdff84584a3ef8cc1f5e1b56e045da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path of_node refcount leak",
+    "concrete_anchors": [
+      "of_find_node_by_name",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "fcaf242e7fc406e78f444a35441e3b58f5e28781": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "dma_release_channel",
+      "dma_request_chan"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  }
+}

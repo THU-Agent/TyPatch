@@ -1,0 +1,103 @@
+{
+  "version": "0.5",
+  "bug": {
+    "key": "composite_resource_leak",
+    "name": "error-path composite resource leak",
+    "description": "A composite descriptor is partially freed before an error-path exit, leaking its owned coherent allocation."
+  },
+  "events": [
+    {
+      "name": "CompositeAllocRet",
+      "kind": "Ret",
+      "description": "axi_dmac_alloc_desc returns the composite descriptor",
+      "role": "acquire",
+      "funcs": ["axi_dmac_alloc_desc"]
+    },
+    {
+      "name": "FullFree",
+      "kind": "Call",
+      "description": "the dedicated helper frees both owned resources",
+      "role": "release",
+      "bindings": [{"func": "axi_dmac_free_desc", "arg": 0}]
+    },
+    {
+      "name": "PartialFree",
+      "kind": "Call",
+      "description": "kfree releases only the outer descriptor",
+      "role": "release",
+      "bindings": [{"func": "kfree", "arg": 0}]
+    },
+    {
+      "name": "Exit",
+      "kind": "Exit",
+      "description": "the current function returns on an error path",
+      "role": "sink"
+    }
+  ],
+  "fsm": {
+    "states": ["Init", "CompositeAllocated", "FullyFreed", "PartiallyFreed", "Leak"],
+    "initial": "Init",
+    "transitions": {
+      "Init": {
+        "CompositeAllocRet": "CompositeAllocated",
+        "FullFree": "Init",
+        "PartialFree": "Init",
+        "Exit": "Init"
+      },
+      "CompositeAllocated": {
+        "CompositeAllocRet": "CompositeAllocated",
+        "FullFree": "FullyFreed",
+        "PartialFree": "PartiallyFreed",
+        "Exit": "CompositeAllocated"
+      },
+      "FullyFreed": {
+        "CompositeAllocRet": "CompositeAllocated",
+        "FullFree": "FullyFreed",
+        "PartialFree": "FullyFreed",
+        "Exit": "FullyFreed"
+      },
+      "PartiallyFreed": {
+        "CompositeAllocRet": "PartiallyFreed",
+        "FullFree": "FullyFreed",
+        "PartialFree": "PartiallyFreed",
+        "Exit": "Leak"
+      },
+      "Leak": {
+        "CompositeAllocRet": "Leak",
+        "FullFree": "Leak",
+        "PartialFree": "Leak",
+        "Exit": "Leak"
+      }
+    },
+    "merges": [
+      {"a": "Init", "b": "CompositeAllocated", "result": "CompositeAllocated"},
+      {"a": "Init", "b": "PartiallyFreed", "result": "PartiallyFreed"}
+    ],
+    "state_roles": {
+      "Init": "init",
+      "CompositeAllocated": "danger",
+      "FullyFreed": "safe",
+      "PartiallyFreed": "danger",
+      "Leak": "bug"
+    }
+  },
+  "trigger": {
+    "bug_state": "Leak",
+    "key_events": ["CompositeAllocRet", "PartialFree", "Exit"],
+    "sliced_events": ["CompositeAllocRet", "FullFree", "PartialFree", "Exit"]
+  },
+  "context": {
+    "start_events": ["CompositeAllocRet"],
+    "end_events": ["FullFree"]
+  },
+  "modeling": "typestate_protocol",
+  "protocol_semantics": {
+    "guard_semantics": "none",
+    "exit_semantics": "error_return"
+  },
+  "path_semantics": {
+    "require_same_path": true,
+    "source_visibility": "stable",
+    "require_distinct_key_locations": true
+  }
+}

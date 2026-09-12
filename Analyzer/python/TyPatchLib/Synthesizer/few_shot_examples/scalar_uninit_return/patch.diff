@@ -1,0 +1,9 @@
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+@@
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
+ 
+ 	for_each_set_bit(i, mask, ngpio)
+ 		ret = set_line(i);
+ 	return ret;

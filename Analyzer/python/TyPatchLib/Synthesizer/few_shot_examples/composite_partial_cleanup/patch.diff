@@ -1,0 +1,7 @@
+diff --git a/drivers/dma/dma-axi-dmac.c b/drivers/dma/dma-axi-dmac.c
+@@
+ 	if (!axi_dmac_check_addr(chan, vecs[i].addr)) {
+-		kfree(desc);
++		axi_dmac_free_desc(desc);
+ 		return NULL;
+ 	}

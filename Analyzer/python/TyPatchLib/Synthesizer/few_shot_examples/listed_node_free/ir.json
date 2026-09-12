@@ -1,0 +1,86 @@
+{
+  "version": "0.5",
+  "bug": {
+    "key": "listed_node_free",
+    "name": "listed node container freed before unlink",
+    "description": "A container is freed while its intrusive list node remains published."
+  },
+  "events": [
+    {
+      "name": "ListAdd",
+      "kind": "Call",
+      "description": "the tracked zero-offset list node is published",
+      "role": "publish",
+      "bindings": [{"func": "list_add_tail", "arg": 0}]
+    },
+    {
+      "name": "ListDel",
+      "kind": "Call",
+      "description": "the tracked list node is unlinked",
+      "role": "unpublish",
+      "bindings": [{"func": "list_del", "arg": 0}]
+    },
+    {
+      "name": "CallFree",
+      "kind": "Call",
+      "description": "the node's containing object is freed",
+      "role": "sink",
+      "bindings": [{"func": "kfree", "arg": 0}]
+    }
+  ],
+  "fsm": {
+    "states": ["Init", "Listed", "Unlinked", "FreedWhileListed"],
+    "initial": "Init",
+    "transitions": {
+      "Init": {
+        "ListAdd": "Listed",
+        "ListDel": "Init",
+        "CallFree": "Init"
+      },
+      "Listed": {
+        "ListAdd": "Listed",
+        "ListDel": "Unlinked",
+        "CallFree": "FreedWhileListed"
+      },
+      "Unlinked": {
+        "ListAdd": "Listed",
+        "ListDel": "Unlinked",
+        "CallFree": "Init"
+      },
+      "FreedWhileListed": {
+        "ListAdd": "FreedWhileListed",
+        "ListDel": "FreedWhileListed",
+        "CallFree": "FreedWhileListed"
+      }
+    },
+    "merges": [
+      {"a": "Init", "b": "Listed", "result": "Listed"},
+      {"a": "Listed", "b": "Unlinked", "result": "Listed"}
+    ],
+    "state_roles": {
+      "Init": "init",
+      "Listed": "danger",
+      "Unlinked": "safe",
+      "FreedWhileListed": "bug"
+    }
+  },
+  "trigger": {
+    "bug_state": "FreedWhileListed",
+    "key_events": ["ListAdd", "CallFree"],
+    "sliced_events": ["ListAdd", "ListDel", "CallFree"]
+  },
+  "context": {
+    "start_events": ["ListAdd"],
+    "end_events": ["CallFree"]
+  },
+  "modeling": "typestate_protocol",
+  "protocol_semantics": {
+    "guard_semantics": "none",
+    "exit_semantics": "any_return"
+  },
+  "path_semantics": {
+    "require_same_path": true,
+    "source_visibility": "stable",
+    "require_distinct_key_locations": true
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "examples": [
+    {
+      "id": "nullable_memremap_return",
+      "title": "nullable memremap return guarded before dereference",
+      "status": "executable",
+      "prompt_enabled": true,
+      "priority": 10,
+      "patch": "nullable_memremap_return/patch.diff",
+      "ir": "nullable_memremap_return/ir.json",
+      "witnesses": {
+        "vulnerable": "nullable_memremap_return/vulnerable.c",
+        "fixed": "nullable_memremap_return/fixed.c"
+      },
+      "selectors": {
+        "api_symbols": [
+          "memremap",
+          "acpi_mp_wake_mailbox"
+        ],
+        "phrases": [
+          "null dereference",
+          "null-dereference",
+          "null check"
+        ],
+        "tokens": [
+          "nullable",
+          "dereference",
+          "ENOMEM"
+        ]
+      },
+      "controls": {
+        "positive": {
+          "event_sequence": [
+            "MaybeNullRet",
+            "Ref"
+          ],
+          "expectation": "the memremap return is dereferenced on the same path without a dominating BrNonNull transition"
+        },
+        "negative": {
+          "event_sequence": [
+            "MaybeNullRet",
+            "BrNonNull",
+            "Ref"
+          ],
+          "expectation": "a dominating non-NULL guard moves the tracked pointer to NonNull, so Ref does not reach NPD"
+        }
+      },
+      "backend_evidence": {
+        "micro_pair": {
+          "status": "pair_pass",
+          "vulnerable_reports": 1,
+          "fixed_reports": 0,
+          "fixture_sha256": {
+            "ir": "50f5b36ad59be505a0a686c691be63a6b90b4c98309cea2f4968b544c0ff3624",
+            "patch": "85f7fd65408605084ae54d9f19866a6e842fb0b8b23ab4aa593f61d337b4b438",
+            "vulnerable": "a6649e4f58d757de7e31e76dcbca6ad7717a892383646139b80b9d5892dd1288",
+            "fixed": "ad5295425fd5ac36360960bfa6ecf72ffa1806a1e2df1b5510c944750fac6905"
+          }
+        }
+      }
+    },
+    {
+      "id": "double_free_store_null",
+      "title": "double free neutralized by clearing the freed field",
+      "status": "executable",
+      "prompt_enabled": true,
+      "priority": 20,
+      "patch": "double_free_store_null/patch.diff",
+      "ir": "double_free_store_null/ir.json",
+      "witnesses": {
+        "vulnerable": "double_free_store_null/vulnerable.c",
+        "fixed": "double_free_store_null/fixed.c"
+      },
+      "selectors": {
+        "api_symbols": [
+          "r600_free_extended_power_table",
+          "vddc_dependency_on_sclk"
+        ],
+        "phrases": [
+          "double free",
+          "double-free",
+          "clear extended power table pointers"
+        ],
+        "tokens": [
+          "StoreNull",
+          "stale pointer"
+        ]
+      },
+      "controls": {
+        "positive": {
+          "event_sequence": [
+            "CallFree",
+            "CallFree"
+          ],
+          "expectation": "two distinct kfree calls on the same tracked pointer reach DoubleFree"
+        },
+        "negative": {
+          "event_sequence": [
+            "CallFree",
+            "StoreNull",
+            "CallFree"
+          ],
+          "expectation": "the fix-only NULL store resets Freed before a later cleanup call"
+        }
+      },
+      "backend_evidence": {
+        "micro_pair": {
+          "status": "pair_pass",
+          "vulnerable_reports": 1,
+          "fixed_reports": 0,
+          "fixture_sha256": {
+            "ir": "bcda62c9228b4b945af8f68053031c61a6f41d3e4d0558d786ea415b8dedd693",
+            "patch": "cf8b32f27b97b9b86da123fc3202520b37fbbbd4d416dec925ae27ece83502b3",
+            "vulnerable": "cbdfc7ecf04fc21ef949542cb529a531d20f6ad95d514cc0ca51e1974616417b",
+            "fixed": "1d3b59a8888dcef3a96d0f71294d164cfc9400ab741b497963bb9fe5229ff454"
+          }
+        }
+      }
+    },
+    {
+      "id": "composite_partial_cleanup",
+      "title": "composite allocation requires the full cleanup helper",
+      "status": "executable",
+      "prompt_enabled": true,
+      "priority": 30,
+      "patch": "composite_partial_cleanup/patch.diff",
+      "ir": "composite_partial_cleanup/ir.json",
+      "witnesses": {
+        "vulnerable": "composite_partial_cleanup/vulnerable.c",
+        "fixed": "composite_partial_cleanup/fixed.c"
+      },
+      "selectors": {
+        "api_symbols": [
+          "axi_dmac_alloc_desc",
+          "axi_dmac_free_desc",
+          "dma_free_coherent"
+        ],
+        "phrases": [
+          "partial cleanup",
+          "resource leak",
+          "coherent memory leak"
+        ],
+        "tokens": [
+          "kfree(desc)",
+          "cleanup helper"
+        ]
+      },
+      "controls": {
+        "positive": {
+          "event_sequence": [
+            "CompositeAllocRet",
+            "PartialFree",
+            "Exit"
+          ],
+          "expectation": "kfree(desc) releases only the outer object and an error return reaches Leak"
+        },
+        "negative": {
+          "event_sequence": [
+            "CompositeAllocRet",
+            "FullFree",
+            "Exit"
+          ],
+          "expectation": "axi_dmac_free_desc releases both the coherent allocation and outer object before exit"
+        }
+      },
+      "backend_evidence": {
+        "micro_pair": {
+          "status": "pair_pass",
+          "vulnerable_reports": 1,
+          "fixed_reports": 0,
+          "fixture_sha256": {
+            "ir": "e89944c2b34d624c0dd3c9a249bf0295ad1ccbe53886d29111de458de27739a3",
+            "patch": "6c409ae439d0e9b9544781d4638e9da33fc4c7c5355e2fcfe24aa66c354f7f4e",
+            "vulnerable": "6a62f4b9e0430bbd86eb4e005be3c3293f7834972d9a1655ae68310f415553d2",
+            "fixed": "4ae794278dc38eb8b20a3e4f77c9be1e9d044fe708e002ff8d4f3640fe29a14f"
+          }
+        }
+      }
+    },
+    {
+      "id": "listed_node_free",
+      "title": "listed node must be unlinked before its container is freed",
+      "status": "executable",
+      "prompt_enabled": true,
+      "priority": 40,
+      "patch": "listed_node_free/patch.diff",
+      "ir": "listed_node_free/ir.json",
+      "witnesses": {
+        "vulnerable": "listed_node_free/vulnerable.c",
+        "fixed": "listed_node_free/fixed.c"
+      },
+      "selectors": {
+        "api_symbols": [
+          "idxd_register_dma_channel",
+          "list_add_tail",
+          "list_del"
+        ],
+        "phrases": [
+          "dangling list",
+          "listed node",
+          "list node",
+          "use-after-free"
+        ],
+        "tokens": [
+          "device_node",
+          "unlink"
+        ]
+      },
+      "controls": {
+        "positive": {
+          "event_sequence": [
+            "ListAdd",
+            "CallFree"
+          ],
+          "expectation": "freeing the zero-offset container while its node is still published reaches FreedWhileListed"
+        },
+        "negative": {
+          "event_sequence": [
+            "ListAdd",
+            "ListDel",
+            "CallFree"
+          ],
+          "expectation": "list_del changes Listed to Unlinked before kfree"
+        }
+      },
+      "backend_evidence": {
+        "micro_pair": {
+          "status": "pair_pass",
+          "vulnerable_reports": 1,
+          "fixed_reports": 0,
+          "fixture_sha256": {
+            "ir": "a16d6711c7229ff4cb94727fc7ec37b8bfd8a2463b38d0b3d2b0882e1b481cf5",
+            "patch": "1ad353f876156bf3e9ea2b23b3c999633d377db631496690b7f4c5cca2e1e658",
+            "vulnerable": "9fd0e919a73461029f6ad1819bf910893de440c734a561c1e30ac00cfc43e0d5",
+            "fixed": "6d29ada83137dd6786ccac2e3fb35f48b39dfb0724ea7cbdb74ccf7c74f4ba90"
+          }
+        }
+      }
+    },
+    {
+      "id": "scalar_uninit_return",
+      "title": "local scalar return is initialized before an empty-loop path",
+      "status": "executable",
+      "prompt_enabled": true,
+      "priority": 50,
+      "patch": "scalar_uninit_return/patch.diff",
+      "ir": "scalar_uninit_return/ir.json",
+      "witnesses": {
+        "vulnerable": "scalar_uninit_return/vulnerable.c",
+        "fixed": "scalar_uninit_return/fixed.c"
+      },
+      "selectors": {
+        "api_symbols": [
+          "gpiochip_set_multiple"
+        ],
+        "phrases": [
+          "uninitialized return",
+          "uninitialised return",
+          "initialize return value",
+          "returned uninitialized"
+        ],
+        "tokens": [
+          "empty loop",
+          "zero iterations",
+          "int ret"
+        ]
+      },
+      "controls": {
+        "positive": {
+          "event_sequence": [
+            "Use"
+          ],
+          "expectation": "returning a named non-parameter local integer without StoreInit reaches UninitUse"
+        },
+        "negative": {
+          "event_sequence": [
+            "StoreInit",
+            "Use"
+          ],
+          "expectation": "the declaration initializer is a StoreInit before the return load"
+        }
+      },
+      "backend_evidence": {
+        "micro_pair": {
+          "status": "pair_pass",
+          "vulnerable_reports": 1,
+          "fixed_reports": 0,
+          "fixture_sha256": {
+            "ir": "27533c77ab9d92b0ead042a2da50cf299637e3dfefafa87f3a92e643a81fe2d4",
+            "patch": "01160a7ee262733adaa0bc65d28995a45f82a502d6e82dd7eaaae37e9c230fbe",
+            "vulnerable": "cc90ef7b8a1b9e170afd459e4213b8c369d17b93146357030c514c868c25db5d",
+            "fixed": "de2c57462665cfa405d20bb0eb7c633ab39cf71c18d7285923d0cd234770b9ec"
+          }
+        }
+      }
+    }
+  ]
+}

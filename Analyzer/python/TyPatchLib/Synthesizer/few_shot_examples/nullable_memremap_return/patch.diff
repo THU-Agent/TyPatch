@@ -1,0 +1,9 @@
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+@@
+ 	acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
+ 					sizeof(*acpi_mp_wake_mailbox),
+ 					MEMREMAP_WB);
++	if (!acpi_mp_wake_mailbox)
++		return -ENOMEM;
+ 
+ 	acpi_mp_wake_mailbox->apic_id = apicid;

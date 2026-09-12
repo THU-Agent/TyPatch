@@ -1,0 +1,1267 @@
+{
+  "03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "null-ptr-deref in mt7925_thermal_init after devm_kasprintf",
+    "concrete_anchors": [
+      "devm_kasprintf"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1358126fbed104e5657955d3ba029b283687ba02": {
+    "anchor_target_ids": [
+      79,
+      153,
+      217,
+      241,
+      254,
+      311,
+      331,
+      575,
+      580,
+      588,
+      816,
+      1360
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/arch/x86/hyperv/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/apic/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/pci/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/uv/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/amd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/intel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/mfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/pci/controller/built-in.a",
+      "/artifact/data/linux-v6.16/kernel/irq/built-in.a"
+    ],
+    "bug_name": "fwnode leak on imsic_setup_state failure",
+    "concrete_anchors": [
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The bug pattern requires calls to irq_domain_alloc_named_fwnode and irq_domain_free_fwnode; restricting to modules where these functions appear covers all possible locations of the leak."
+    },
+    "rare_anchors": [
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "source": "provenance"
+  },
+  "145f820dcbb2cced374f2532f8a61a44dce4a615": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "double-free of response buffer across retry",
+    "concrete_anchors": [
+      "free_rsp_buf"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor function free_rsp_buf is only present in fs/smb/client. The rule is anchored on this specific function, so it cannot fire in any other module."
+    },
+    "rare_anchors": [
+      "free_rsp_buf"
+    ],
+    "source": "provenance"
+  },
+  "148cd4873115feb266c002d4d4618ea7f14342d9": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource-leak",
+    "concrete_anchors": [
+      "of_node_get",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "14ad4c10d5bdd413ff9a914260e89b5f54b7a2c7": {
+    "anchor_target_ids": [
+      1124
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/usb/typec/ucsi/built-in.a"
+    ],
+    "bug_name": "null pointer dereference on cci in ucsi_sync_control_common",
+    "concrete_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule's anchor function ucsi_sync_control_common is specific to the UCSI driver and only appears in that module."
+    },
+    "rare_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "source": "provenance"
+  },
+  "16e088016f38cf728a0de709c3335cc5a3850476": {
+    "anchor_target_ids": [
+      324,
+      553,
+      642
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/openvswitch/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "nf_connlabels leak on error paths",
+    "concrete_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The bug rule anchors on nf_connlabels_get and nf_connlabels_put, which are rare API functions specific to the nf_connlabels subsystem. All known callers are within the current module floor (net/netfilter, net/openvswitch, net/sched). No other kernel code uses these functions, so the pattern cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "source": "provenance"
+  },
+  "188e0fa5a679570ea35474575e724d8211423d17": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable __pskb_copy return dereference",
+    "concrete_anchors": [
+      "__pskb_copy"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "__pskb_copy is a generic kernel function defined in net/core/skbuff.c and used widely across the networking stack. A NULL return dereference is not specific to the listed modules; it can occur anywhere the function is called. Restricting to these modules would miss potential bugs in other callers."
+    },
+    "rare_anchors": [
+      "__pskb_copy"
+    ],
+    "source": "llm-widened"
+  },
+  "1c1e0fc88d6ef65bf15d517853251f75ab9d18c3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource leak of generic IRQ chips on remove",
+    "concrete_anchors": [
+      "irq_alloc_domain_generic_chips",
+      "irq_domain_remove",
+      "irq_domain_remove_generic_chips"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "21e9a838f505178e109ccb3bf19d7808eb0326f4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable devm_kzalloc return dereference",
+    "concrete_anchors": [
+      "__kmalloc",
+      "devm_kasprintf",
+      "devm_kcalloc",
+      "devm_kmalloc",
+      "devm_kmemdup",
+      "devm_kstrdup",
+      "devm_kzalloc",
+      "kcalloc",
+      "kmalloc",
+      "kmalloc_array",
+      "kstrdup",
+      "kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "26490a375cb9be9bac96b5171610fd85ca6c2305": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "insn_aux_data memory leak in bpf_check",
+    "concrete_anchors": [
+      "vfree",
+      "vzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "27880b0b0d35ad1c98863d09788254e36f874968": {
+    "anchor_target_ids": [
+      324,
+      625
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/ife/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "NULL dereference after ife_encode()",
+    "concrete_anchors": [
+      "ife_encode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is specifically anchored on the ife_encode function, which only appears in net/ife and net/sched. The NULL dereference pattern is tied to this function's usage, so it cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "ife_encode"
+    ],
+    "source": "provenance"
+  },
+  "28df30e61b46a33d1f0bb60757747396886ef687": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "lock imbalance",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3358995b1a7f9dcb52a56ec8251570d71024dad0": {
+    "anchor_target_ids": [
+      1003
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/bnxt/built-in.a"
+    ],
+    "bug_name": "use-after-free of hwrm_dma_pool",
+    "concrete_anchors": [
+      "bnxt_free_hwrm_resources",
+      "hwrm_dma_pool"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions bnxt_free_hwrm_resources and hwrm_dma_pool are specific to the bnxt driver and required for the use-after-free bug pattern. They do not appear in any other module, so the rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "bnxt_free_hwrm_resources",
+      "hwrm_dma_pool"
+    ],
+    "source": "provenance"
+  },
+  "34b9a83c50660148bde01cde16451dbe78369749": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "refcount leak in nvmet_sq_create()",
+    "concrete_anchors": [
+      "kref_get_unless_zero",
+      "nvmet_ctrl_put",
+      "ref"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3a56855bb549211031184e45fe1a9d24874d7227": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar variable",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "3b09ff54114566864eea59020f6b69c5bb325b9d": {
+    "anchor_target_ids": [
+      654
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/qrtr/built-in.a"
+    ],
+    "bug_name": "missing qrtr_node_release on error path",
+    "concrete_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions qrtr_node_lookup and qrtr_node_release are specific to the QRTR subsystem and only appear in net/qrtr. The bug pattern is tied to this API and cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "source": "provenance"
+  },
+  "41782770be567abc6509169d0ffdada31c783a66": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource-leak: rhashtable not destroyed on error paths",
+    "concrete_anchors": [
+      "rhashtable_destroy",
+      "rhashtable_init"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "41c8c1d65b32beacd8d916a22457b4f6e47f45af": {
+    "anchor_target_ids": [
+      1473
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxsw/built-in.a"
+    ],
+    "bug_name": "mlxsw_sp_port_lag_join refcount leak",
+    "concrete_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions mlxsw_sp_lag_get and mlxsw_sp_lag_put are unique to the mlxsw driver, and the refcount leak pattern is specific to that driver's LAG implementation. No similar API occurs elsewhere, so the bug cannot fire outside the identified modules."
+    },
+    "rare_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "source": "provenance"
+  },
+  "4373cfa38ead58f980362c841b0d0bdf8c4d956c": {
+    "anchor_target_ids": [
+      198,
+      910,
+      1093,
+      1509,
+      1531,
+      1669
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/phy/ti/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/platform/olpc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/platform/x86/amd/pmf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/power/supply/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/greybus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/dwc3/built-in.a"
+    ],
+    "bug_name": "refcount-leak",
+    "concrete_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on the specific functions power_supply_get_by_name and power_supply_put, which are part of the power supply subsystem API. The bug is a refcount leak specific to the usage of these functions. The current module floor exhaustively covers all places where these functions are called; therefore, the rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "source": "provenance"
+  },
+  "487767bff572d46f7c37ad846c4078f6d6c9cc55": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar variable r",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "4c61f678a468768afd45c3d9ac697f8f55aa04eb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "missing-mutex-unlock",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "4c7a548a70a44269266858f65c3b5fc9c3ace057": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "NULL pointer dereference in snd_hda_ctl_add via snd_ctl_new1",
+    "concrete_anchors": [
+      "snd_ctl_new1"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "4e8eb6952aa6749726c6c3763ae0032a6332c24f": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "IRQ domain leak on error path",
+    "concrete_anchors": [
+      "irq_domain_create_legacy",
+      "irq_domain_remove"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "53442aad1d5790932ed82220bd3c9e1ee9388b83": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "memory leak in ofdpa_port_fdb after hash_del",
+    "concrete_anchors": [
+      "hash_del",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "5d07ab2a7fa1305e429d9221716582f290b58078": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double cleanup via managed action and manual cleanup",
+    "concrete_anchors": [
+      "devm_add_action_or_reset",
+      "lock",
+      "mutex_destroy"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "606c0826bd90384a54571c0c5475ca41f50164ea": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime-pm-usage-counter-leak",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "63542bb402b7013171c9f621c28b609eda4dbf1f": {
+    "anchor_target_ids": [
+      374,
+      853,
+      1226,
+      1669
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/media/usb/msi2500/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/spi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/greybus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/video/fbdev/mmp/hw/built-in.a"
+    ],
+    "bug_name": "double-put",
+    "concrete_anchors": [
+      "devm_spi_register_controller",
+      "spi_controller_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The bug is specific to the SPI subsystem API: a double-put occurs when spi_controller_put is called after devm_spi_register_controller. The rule can only fire in code that contains both of these rare anchor functions, which is exactly the set of modules already identified."
+    },
+    "rare_anchors": [
+      "devm_spi_register_controller",
+      "spi_controller_put"
+    ],
+    "source": "provenance"
+  },
+  "6ae67dcac742529210a23dac6c9a7de1acfb52a3": {
+    "anchor_target_ids": [
+      3,
+      4,
+      5,
+      9,
+      11,
+      17,
+      21,
+      25,
+      26,
+      28,
+      40,
+      64,
+      65,
+      72,
+      94,
+      116,
+      145,
+      153,
+      157,
+      160,
+      164,
+      179,
+      185,
+      195,
+      199,
+      202,
+      207,
+      217,
+      218,
+      222,
+      228,
+      229,
+      231,
+      232,
+      234,
+      236,
+      238,
+      241,
+      248,
+      250,
+      254,
+      257,
+      264,
+      331
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/arch/x86/boot/startup/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/coco/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/coco/sev/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/coco/tdx/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/crypto/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/entry/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/entry/vdso/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/entry/vsyscall/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/events/amd/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/events/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/events/intel/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/events/zhaoxin/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/hyperv/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/ia32/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/acpi/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/apic/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/mce/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/microcode/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/mtrr/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/resctrl/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/cpu/sgx/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/fpu/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/kprobes/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kvm/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/lib/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/lib/crypto/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/lib/lib.a",
+      "/artifact/data/linux-v6.16/arch/x86/mm/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/mm/pat/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/net/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/pci/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/atom/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/efi/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/intel-mid/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/intel/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/pvh/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/uv/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/power/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/realmode/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/video/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/virt/svm/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/xen/built-in.a"
+    ],
+    "bug_name": "resource-leak in kvm_s390_faultin_gfn",
+    "concrete_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "widen_prefix",
+      "prefixes": [
+        "arch/",
+        "virt/kvm/"
+      ],
+      "reason": "The anchor functions __kvm_faultin_pfn and kvm_release_faultin_page are generic KVM page fault handling helpers, not x86-specific. The resource leak pattern (e.g., failing to release a faultin page) could occur in any KVM architecture (s390, ARM, etc.) that uses these functions. Restricting to x86/kvm would miss bugs in other KVM modules."
+    },
+    "rare_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "source": "llm-widened"
+  },
+  "6af3330ec5d5fb8c06c04eb520a71cf73ea5a765": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of struct virtio_fs->vqs",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6df6b1f2c49678211f65647c300bc51dda02893b": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free of hidpp->input due to missing NULL clear after release",
+    "concrete_anchors": [
+      "input_free_device"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6e9cab2247e5b243ae2d907ce7c948a8a9c8d61a": {
+    "anchor_target_ids": [
+      1528
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/platform/x86/dell/built-in.a"
+    ],
+    "bug_name": "resource-leak",
+    "concrete_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule's anchor functions, dell_laptop_register_notifier and dell_laptop_unregister_notifier, are specific to the dell-laptop driver and only appear in drivers/platform/x86/dell. The resource leak pattern is tied to these functions, so scanning other modules is unnecessary."
+    },
+    "rare_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "source": "provenance"
+  },
+  "6ea0ce3a19f9c37a014099e2b0a46b27fa164564": {
+    "anchor_target_ids": [
+      650,
+      1083,
+      1482
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/crypto/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/host1x/built-in.a"
+    ],
+    "bug_name": "host1x job refcount leak",
+    "concrete_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor functions host1x_job_alloc and host1x_job_put are unique to the host1x subsystem and only appear in the listed modules; the refcount leak pattern is specific to this API and cannot occur elsewhere."
+    },
+    "rare_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "source": "provenance"
+  },
+  "71abf20b28ff87fee6951ec2218d5ce7969c4e87": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "rxe: missing NULL check after skb_clone in rxe_rcv_mcast_pkt",
+    "concrete_anchors": [
+      "skb_clone"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7886054b06f762f62054957a8f6de0f14e6b7541": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of zeropage on DMA setup failure",
+    "concrete_anchors": [
+      "free_page"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7c0ace54887872ebd99fefdfe85d273295a09426": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "missing-spin-unlock-on-error",
+    "concrete_anchors": [
+      "spin_lock",
+      "spin_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "acrn-pmcmd-ioctl-kmalloc-info-leak",
+    "concrete_anchors": [
+      "copy_to_user",
+      "kmalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "81ec618f59415bdcf3e8989e2691c1f240be27fb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "pci_dev refcount leak in UPI discovery",
+    "concrete_anchors": [
+      "pci_dev_put",
+      "pci_get_domain_bus_and_slot"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "8318e04ab2526b155773313b66a1542476ce1106": {
+    "anchor_target_ids": [
+      600
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/sound/soc/qcom/qdsp6/built-in.a"
+    ],
+    "bug_name": "nullable audioreach_parse_common_tokens return dereference",
+    "concrete_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is strictly tied to the return value of audioreach_parse_common_tokens, which is a driver-specific function defined only in sound/soc/qcom/qdsp6. The pattern cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "source": "provenance"
+  },
+  "863810d4985ad214f70c1623f24384ccc850f2a2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar use",
+    "concrete_anchors": [
+      "lwmi_om_fan_get_set"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "87bd2ad568e15b90d5f7d4bcd70342d05dad649c": {
+    "anchor_target_ids": [
+      142
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/kernel/time/built-in.a"
+    ],
+    "bug_name": "posix-cpu-timers: Fix pid refcount leak in do_cpu_nanosleep() error path",
+    "concrete_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The bug is specific to the posix CPU timers implementation in kernel/time, involving the anchor functions posix_cpu_timer_create and posix_cpu_timer_del. The pattern does not generalize to other modules."
+    },
+    "rare_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "source": "provenance"
+  },
+  "8a59a2d84fa3de2b4bbb8759b52e62c9c06d9d32": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar use",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "8d13f7a8450206e3f820cdb26e33e91d181071b4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource-leak: pm_runtime_get_sync without put on error paths",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_sync_autosuspend"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "96621ca578dbadeb12bd190e0733cdc5c76899d8": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "nullable bo_adev dereference in svm_range_map_to_gpu",
+    "concrete_anchors": [
+      "svm_range_map_to_gpu"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule's anchor function svm_range_map_to_gpu is specific to the amdgpu driver and does not appear in other modules, so the bug pattern cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "svm_range_map_to_gpu"
+    ],
+    "source": "provenance"
+  },
+  "97b17dd8266d2e26d9ee3c75a0fa34ecde6944f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime-pm-usage-leak",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9c37eac31c559b079d55890d1dbe70072fec0435": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "reset-refcount-leak",
+    "concrete_anchors": [
+      "reset_control_assert",
+      "reset_control_deassert"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9e6e7c74315095fd40f41003850690c711e44420": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource-leak-missing-unlock",
+    "concrete_anchors": [
+      "mutex_lock_interruptible",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a0fe29d20e7822182e12324905af5115c1b3aed3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable ioremap return dereference",
+    "concrete_anchors": [
+      "ioremap"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a3f3859cecacb64f18fd446271ece9a3b3f2d4de": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "refcount leak in i_ipmi_request",
+    "concrete_anchors": [
+      "kref_get",
+      "kref_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a6582701178a47c4d0cb2188c965c59c0c0647c8": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "double-free of amdgpu_free_extended_power_table",
+    "concrete_anchors": [
+      "amdgpu_free_extended_power_table"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The function amdgpu_free_extended_power_table is a highly specific AMDGPU driver internal function, appearing only in the amdgpu module. The double-free rule is anchored on this exact function, so the pattern cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "amdgpu_free_extended_power_table"
+    ],
+    "source": "provenance"
+  },
+  "aa7069d840dab6bef4887657b94e439c82ae985a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked dma_alloc_coherent return",
+    "concrete_anchors": [
+      "dma_alloc_coherent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ab42b48f32d4c766420c3499ee9c0289b7028182": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "missing dma_alloc_coherent NULL check",
+    "concrete_anchors": [
+      "dma_alloc_coherent",
+      "dma_pool_alloc",
+      "dma_pool_zalloc",
+      "pci_alloc_consistent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "abfaf0eee97925905e742aa3b0b72e04a918fa9e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "kmemdup return null pointer dereference",
+    "concrete_anchors": [
+      "kmemdup"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "acc44cbd7727115f9381c35c2898b1b5af665ec8": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of IE pointer in cfg80211_update_assoc_bss_entry",
+    "concrete_anchors": [
+      "cfg80211_update_known_bss",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b0eeba527e704d6023a6cd9103f929226e326b03": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kcalloc return dereference",
+    "concrete_anchors": [
+      "devm_kcalloc",
+      "devm_kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b38e53cbfb9d84732e5984fbd73e128d592415c5": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "usblp-uninitialized-heap-leak",
+    "concrete_anchors": [
+      "copy_to_user",
+      "kmalloc",
+      "kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b4e964f84c1a44b0c63a5036efb24cf0f938db0a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar return",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "b5c7a7f452b885bfbe102bd3a057a5f496802f8b": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "kzalloc return NULL dereference",
+    "concrete_anchors": [
+      "__kmalloc",
+      "kcalloc",
+      "kmalloc",
+      "kmalloc_array",
+      "kmemdup",
+      "krealloc",
+      "kstrdup",
+      "kstrndup",
+      "kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba36786b21d19082e696eda85bfcd49e7071944a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "fence reference leak",
+    "concrete_anchors": [
+      "dma_fence_get",
+      "dma_fence_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba45106342bbdd905651cb9fcefb8c11871d4c25": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "devlink rate node create parent refcnt leak",
+    "concrete_anchors": [
+      "refcnt",
+      "refcount_dec",
+      "refcount_inc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "badc53620fe813b3a9f727ef9526f98567c2c898": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nvmet-rdma-ndev-ref-leak",
+    "concrete_anchors": [
+      "kref_put",
+      "nvmet_rdma_find_get_device",
+      "ref"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "bcb8889c4981fdde42d4fd2c29a77d510fe21da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of devm-managed allocation",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c849de7d8757a7af801fc4a4058f71d481d367f2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free",
+    "concrete_anchors": [
+      "genlmsg_reply",
+      "nlmsg_free"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d3a9a8cf2d7fd61a2f63df61f6cbc0a9bb007cc0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after put_device",
+    "concrete_anchors": [
+      "kfree",
+      "pdata",
+      "put_device"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d46f9f23897261da53ffbeb89d48a13982ba7d28": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource-leak",
+    "concrete_anchors": [
+      "kcalloc",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "dabac51b8102e1643d8e297a8e6948dab190aa4c": {
+    "anchor_target_ids": [
+      667
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/handshake/built-in.a"
+    ],
+    "bug_name": "NULL pointer dereference in handshake_complete()",
+    "concrete_anchors": [
+      "handshake_req_next"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor function handshake_req_next is specific to the handshake subsystem in net/handshake and is required for the bug pattern, so the rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "handshake_req_next"
+    ],
+    "source": "provenance"
+  },
+  "dc3382fffdec2c1d6df5836c88fa37b39cd8651e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked allocator return dereference",
+    "concrete_anchors": [
+      "kcalloc",
+      "kmalloc",
+      "kmalloc_array",
+      "kmemdup",
+      "kstrdup",
+      "kstrndup",
+      "kzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ee895ccdf776a676655b1405d493cfcf43d157f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "enabled clock leak on error path",
+    "concrete_anchors": [
+      "clk_disable_unprepare",
+      "clk_prepare_enable"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "eedc6867ebad73edbfaf9a0a65fbef7115cc4753": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free on registration failure",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "f396f4005180928cd9e15e352a6512865d3bc908": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "URB leak in alloc_mtk_intr_urb error path",
+    "concrete_anchors": [
+      "usb_alloc_urb",
+      "usb_free_urb"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "f63a9df7e3f9f842945d292a19d9938924f066f9": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "Uninitialized scalar variable",
+    "concrete_anchors": [
+      "proc_get_long"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "The bug pattern involves an uninitialized scalar variable passed to proc_get_long, which can occur at any call site of that function. The anchor is defined in kernel/ but is likely called from many other modules, so restricting the scan to kernel/ would miss true bugs elsewhere in the tree."
+    },
+    "rare_anchors": [
+      "proc_get_long"
+    ],
+    "source": "llm-widened"
+  },
+  "f67790a0715edd292d64a104e6e294290243d16d": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "double-free of smu_wm_set",
+    "concrete_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The anchor function dm_helpers_free_gpu_mem is only present in the amdgpu driver module, and the double-free of smu_wm_set is specific to that driver's usage. No other kernel code uses this function, so the bug cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "source": "provenance"
+  },
+  "f9c169b51b6ce20394594ef674d6b10efba31220": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "use-after-free of cfile in smb2_set_path_size",
+    "concrete_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The distinctive anchor functions cifs_get_writable_path and smb2_compound_op are specific to the CIFS client filesystem module (fs/smb/client). The use-after-free of cfile is tied to these functions and the CIFS-specific data structures, so the pattern cannot occur elsewhere in the kernel."
+    },
+    "rare_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "source": "provenance"
+  },
+  "fa11039d6cdff84584a3ef8cc1f5e1b56e045da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "of_node refcount leak in scmi_regulator_probe",
+    "concrete_anchors": [
+      "of_find_node_by_name",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "fcaf242e7fc406e78f444a35441e3b58f5e28781": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "DMA channel leak on probe error",
+    "concrete_anchors": [
+      "dma_release_channel",
+      "dma_request_chan"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  }
+}

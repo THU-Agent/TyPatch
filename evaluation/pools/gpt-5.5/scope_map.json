@@ -1,0 +1,1479 @@
+{
+  "03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kasprintf return use",
+    "concrete_anchors": [
+      "devm_kasprintf"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "0c66b0da006415880444ec821e3cb66a89273865": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-put after ownership transfer",
+    "concrete_anchors": [
+      "cgroup_put",
+      "scx_alloc_and_add_sched"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "107a4cb0d47e735830f852d83970d5c81f8e1e08": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "__free_page",
+      "rxgk_alloc_packet"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1358126fbed104e5657955d3ba029b283687ba02": {
+    "anchor_target_ids": [
+      79,
+      153,
+      217,
+      241,
+      254,
+      311,
+      331,
+      575,
+      580,
+      588,
+      816,
+      1360
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/arch/x86/hyperv/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/apic/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/kernel/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/pci/built-in.a",
+      "/artifact/data/linux-v6.16/arch/x86/platform/uv/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/amd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/iommu/intel/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/mfd/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/pci/controller/built-in.a",
+      "/artifact/data/linux-v6.16/kernel/irq/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored specifically on irq_domain_alloc_named_fwnode/irq_domain_free_fwnode pairing, so it cannot match in modules that do not call these APIs."
+    },
+    "rare_anchors": [
+      "irq_domain_alloc_named_fwnode",
+      "irq_domain_free_fwnode"
+    ],
+    "source": "provenance"
+  },
+  "145f820dcbb2cced374f2532f8a61a44dce4a615": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "double-free after stale replay response cleanup",
+    "concrete_anchors": [
+      "free_rsp_buf"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on free_rsp_buf, a CIFS/SMB client-specific replay response cleanup helper that only appears under fs/smb/client. This double-free pattern depends on that subsystem-specific stale replay response buffer ownership path, so the rule cannot literally match elsewhere without the required anchor."
+    },
+    "rare_anchors": [
+      "free_rsp_buf"
+    ],
+    "source": "provenance"
+  },
+  "148cd4873115feb266c002d4d4618ea7f14342d9": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "of_node refcount leak",
+    "concrete_anchors": [
+      "of_node_get",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "14ad4c10d5bdd413ff9a914260e89b5f54b7a2c7": {
+    "anchor_target_ids": [
+      1124
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/usb/typec/ucsi/built-in.a"
+    ],
+    "bug_name": "nullable cci parameter dereference",
+    "concrete_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored exclusively on ucsi_sync_control_common, a UCSI driver helper in drivers/usb/typec/ucsi; the nullable cci parameter dereference is specific to this subsystem API and cannot match elsewhere without that function."
+    },
+    "rare_anchors": [
+      "ucsi_sync_control_common"
+    ],
+    "source": "provenance"
+  },
+  "16e088016f38cf728a0de709c3335cc5a3850476": {
+    "anchor_target_ids": [
+      324,
+      553,
+      642
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/netfilter/built-in.a",
+      "/artifact/data/linux-v6.16/net/openvswitch/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "error-path nf_connlabels reference leak",
+    "concrete_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is specific to nf_connlabels_get/nf_connlabels_put reference management; those API calls are required anchors for the leak pattern, so it cannot fire outside modules using this connlabels API."
+    },
+    "rare_anchors": [
+      "nf_connlabels_get",
+      "nf_connlabels_put"
+    ],
+    "source": "provenance"
+  },
+  "188e0fa5a679570ea35474575e724d8211423d17": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable __pskb_copy return used by skb_clone",
+    "concrete_anchors": [
+      "__pskb_copy"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "The required anchor __pskb_copy is a generic networking skb helper exported/usable beyond the currently matched directories, and the unsafe pattern of using a nullable copy result with skb_clone is not specific to hsr, ipv4, or tipc. Restricting to only those modules could miss the same bug elsewhere in kernel networking code."
+    },
+    "rare_anchors": [
+      "__pskb_copy"
+    ],
+    "source": "llm-widened"
+  },
+  "18d216788bef06332ff8901670ecf1ed8f6eb614": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "stale rq_procinfo release callback double invocation",
+    "concrete_anchors": [
+      "rq_procinfo",
+      "svc_release_rqst"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1aec30021edd410b986c156f195f3d23959a9d11": {
+    "anchor_target_ids": [
+      150,
+      170,
+      740
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/ext4/built-in.a",
+      "/artifact/data/linux-v6.16/fs/jbd2/built-in.a",
+      "/artifact/data/linux-v6.16/fs/ocfs2/built-in.a"
+    ],
+    "bug_name": "publish-before-initialization",
+    "concrete_anchors": [
+      "jbd2_journal_begin_ordered_truncate",
+      "jbd2_journal_init_jbd_inode",
+      "jbd2_submit_inode_data",
+      "jbd2_wait_inode_data"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored entirely on JBD2-specific APIs: jbd2_journal_init_jbd_inode and the related ordered truncate/data submission/wait helpers. Those functions define the initialization/use relationship the rule checks, and they textually appear only under fs/ext4, fs/jbd2, and fs/ocfs2. Without these JBD2 calls the rule cannot literally fire elsewhere."
+    },
+    "rare_anchors": [
+      "jbd2_journal_begin_ordered_truncate",
+      "jbd2_journal_init_jbd_inode",
+      "jbd2_submit_inode_data",
+      "jbd2_wait_inode_data"
+    ],
+    "source": "provenance"
+  },
+  "1c1e0fc88d6ef65bf15d517853251f75ab9d18c3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "generic IRQ chip leak on domain removal",
+    "concrete_anchors": [
+      "irq_alloc_domain_generic_chips",
+      "irq_domain_remove",
+      "irq_domain_remove_generic_chips"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "1c6267a1d5cf4c73b656f8181b310cbbb3e4767b": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "cifs_buf_get",
+      "cifs_small_buf_get",
+      "free_rsp_buf"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on CIFS/SMB client buffer allocation and response-buffer release APIs (cifs_buf_get, cifs_small_buf_get, free_rsp_buf). Those functions are subsystem-specific and required for this rule instance to fire, so the deterministic module floor fs/smb/client is sufficient."
+    },
+    "rare_anchors": [
+      "cifs_buf_get",
+      "cifs_small_buf_get",
+      "free_rsp_buf"
+    ],
+    "source": "provenance"
+  },
+  "21e9a838f505178e109ccb3bf19d7808eb0326f4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kzalloc return dereference",
+    "concrete_anchors": [
+      "devm_kzalloc",
+      "kzalloc_noprof"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "26490a375cb9be9bac96b5171610fd85ca6c2305": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "vfree",
+      "vzalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "266d3dd8b757b48a576e90f018b51f7b7563cc32": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free after stale output buffer",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "27880b0b0d35ad1c98863d09788254e36f874968": {
+    "anchor_target_ids": [
+      324,
+      625
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/ife/built-in.a",
+      "/artifact/data/linux-v6.16/net/sched/built-in.a"
+    ],
+    "bug_name": "unchecked nullable return",
+    "concrete_anchors": [
+      "ife_encode"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored specifically on ife_encode, which is an IFE subsystem API appearing only under net/ife and net/sched; without that call the rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "ife_encode"
+    ],
+    "source": "provenance"
+  },
+  "28dd788382c43b330480f57cd34cde0840896743": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "kcalloc",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "28df30e61b46a33d1f0bb60757747396886ef687": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "missing unlock on early return",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3358995b1a7f9dcb52a56ec8251570d71024dad0": {
+    "anchor_target_ids": [
+      1003
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/broadcom/bnxt/built-in.a"
+    ],
+    "bug_name": "PTP clear after HWRM resource teardown",
+    "concrete_anchors": [
+      "bnxt_free_hwrm_resources",
+      "bnxt_ptp_clear"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is keyed to bnxt-specific functions: bnxt_free_hwrm_resources and bnxt_ptp_clear. These are driver-local HWRM/PTP cleanup APIs in drivers/net/ethernet/broadcom/bnxt, so the literal rule cannot fire outside modules containing those anchors."
+    },
+    "rare_anchors": [
+      "bnxt_free_hwrm_resources",
+      "bnxt_ptp_clear"
+    ],
+    "source": "provenance"
+  },
+  "34b9a83c50660148bde01cde16451dbe78369749": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "kref_get_unless_zero",
+      "nvmet_ctrl_put",
+      "ref"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "3a56855bb549211031184e45fe1a9d24874d7227": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar return",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "3b09ff54114566864eea59020f6b69c5bb325b9d": {
+    "anchor_target_ids": [
+      654
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/qrtr/built-in.a"
+    ],
+    "bug_name": "error-path node reference leak",
+    "concrete_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is tied to the QRTR node reference API: qrtr_node_lookup acquires a node reference and qrtr_node_release drops it. Those distinctive functions are required for this specific error-path leak pattern to fire, and they textually appear only under net/qrtr."
+    },
+    "rare_anchors": [
+      "qrtr_node_lookup",
+      "qrtr_node_release"
+    ],
+    "source": "provenance"
+  },
+  "41782770be567abc6509169d0ffdada31c783a66": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "rhashtable_destroy",
+      "rhashtable_init"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "41c8c1d65b32beacd8d916a22457b4f6e47f45af": {
+    "anchor_target_ids": [
+      1473
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/net/ethernet/mellanox/mlxsw/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on mlxsw_sp_lag_get/mlxsw_sp_lag_put, which are driver-specific mlxsw LAG reference-management APIs. If those calls are required for the error-path resource-leak match, the pattern cannot literally fire outside drivers/net/ethernet/mellanox/mlxsw where the APIs appear."
+    },
+    "rare_anchors": [
+      "mlxsw_sp_lag_get",
+      "mlxsw_sp_lag_put"
+    ],
+    "source": "provenance"
+  },
+  "4373cfa38ead58f980362c841b0d0bdf8c4d956c": {
+    "anchor_target_ids": [
+      198,
+      910,
+      1093,
+      1509,
+      1531,
+      1669
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/phy/ti/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/platform/olpc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/platform/x86/amd/pmf/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/power/supply/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/greybus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/dwc3/built-in.a"
+    ],
+    "bug_name": "refcount resource leak",
+    "concrete_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored specifically on power_supply_get_by_name and power_supply_put reference handling; without these API calls the pattern cannot match, and the listed module floor is defined by all textual occurrences of those required anchors."
+    },
+    "rare_anchors": [
+      "power_supply_get_by_name",
+      "power_supply_put"
+    ],
+    "source": "provenance"
+  },
+  "487767bff572d46f7c37ad846c4078f6d6c9cc55": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar return",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "4c61f678a468768afd45c3d9ac697f8f55aa04eb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path lock leak",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "4c7a548a70a44269266858f65c3b5fc9c3ace057": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked snd_ctl_new1 return dereference",
+    "concrete_anchors": [
+      "snd_ctl_new1"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "4e8eb6952aa6749726c6c3763ae0032a6332c24f": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path IRQ domain leak",
+    "concrete_anchors": [
+      "devm_kzalloc",
+      "irq_domain_create_legacy",
+      "irq_domain_remove"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "53442aad1d5790932ed82220bd3c9e1ee9388b83": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "resource leak",
+    "concrete_anchors": [
+      "hash_del",
+      "kfree",
+      "ofdpa_fdb_tbl_find"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "541dfb49dcb80c2509e030842de77adfb77820f5": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-put",
+    "concrete_anchors": [
+      "for_each_child_of_node",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "5d07ab2a7fa1305e429d9221716582f290b58078": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-cleanup",
+    "concrete_anchors": [
+      "devm_add_action_or_reset",
+      "fsl_qspi_clk_disable_unprep"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "606c0826bd90384a54571c0c5475ca41f50164ea": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime PM usage counter leak",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "63542bb402b7013171c9f621c28b609eda4dbf1f": {
+    "anchor_target_ids": [
+      374,
+      853,
+      1226,
+      1669
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/media/usb/msi2500/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/spi/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/staging/greybus/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/video/fbdev/mmp/hw/built-in.a"
+    ],
+    "bug_name": "double-put after devm-managed registration",
+    "concrete_anchors": [
+      "devm_spi_register_controller",
+      "spi_controller_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is specifically about double-put after devm-managed SPI controller registration, and both required APIs are SPI-core specific. Without devm_spi_register_controller and spi_controller_put, this exact rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "devm_spi_register_controller",
+      "spi_controller_put"
+    ],
+    "source": "provenance"
+  },
+  "6ae67dcac742529210a23dac6c9a7de1acfb52a3": {
+    "anchor_target_ids": [
+      145
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/arch/x86/kvm/built-in.a"
+    ],
+    "bug_name": "error-path reference leak",
+    "concrete_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on KVM-specific fault-in page reference handling via __kvm_faultin_pfn and kvm_release_faultin_page; these APIs are required for this bug rule to fire and textually appear only under arch/x86/kvm."
+    },
+    "rare_anchors": [
+      "__kvm_faultin_pfn",
+      "kvm_release_faultin_page"
+    ],
+    "source": "provenance"
+  },
+  "6af3330ec5d5fb8c06c04eb520a71cf73ea5a765": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after failed queue setup",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6d827ade51a24e18d81afb9f32756d339520a14c": {
+    "anchor_target_ids": [
+      1514
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/crypto/amlogic/built-in.a"
+    ],
+    "bug_name": "double cleanup after partial allocation failure",
+    "concrete_anchors": [
+      "meson_allocate_chanlist",
+      "meson_free_chanlist"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on the Meson-specific allocation/free helpers meson_allocate_chanlist and meson_free_chanlist, and all matched functions are those helpers. Without those driver-specific APIs textually present, this rule cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "meson_allocate_chanlist",
+      "meson_free_chanlist"
+    ],
+    "source": "provenance"
+  },
+  "6df6b1f2c49678211f65647c300bc51dda02893b": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free through stale input device pointer",
+    "concrete_anchors": [
+      "hidpp_allocate_input",
+      "input_free_device"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "6e9cab2247e5b243ae2d907ce7c948a8a9c8d61a": {
+    "anchor_target_ids": [
+      1528
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/platform/x86/dell/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule anchors exclusively on dell_laptop_register_notifier and dell_laptop_unregister_notifier, which are Dell laptop driver/subsystem-specific notifier APIs. With those functions required for the match, the rule cannot literally fire outside drivers/platform/x86/dell based on the stated matched functions."
+    },
+    "rare_anchors": [
+      "dell_laptop_register_notifier",
+      "dell_laptop_unregister_notifier"
+    ],
+    "source": "provenance"
+  },
+  "6ea0ce3a19f9c37a014099e2b0a46b27fa164564": {
+    "anchor_target_ids": [
+      650,
+      1083,
+      1482
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/crypto/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/tegra/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/gpu/host1x/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored specifically on host1x_job_alloc/host1x_job_put, which are host1x/Tegra job lifetime APIs. Without those required calls, this exact rule cannot fire elsewhere; broader error-path resource leaks are generic but not this anchored bug rule."
+    },
+    "rare_anchors": [
+      "host1x_job_alloc",
+      "host1x_job_put"
+    ],
+    "source": "provenance"
+  },
+  "71abf20b28ff87fee6951ec2218d5ce7969c4e87": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked allocator return before dereference",
+    "concrete_anchors": [
+      "skb_clone"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7886054b06f762f62054957a8f6de0f14e6b7541": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after DMA setup failure",
+    "concrete_anchors": [
+      "free_page"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "7c0ace54887872ebd99fefdfe85d273295a09426": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "missing unlock on error path",
+    "concrete_anchors": [
+      "mutex_lock",
+      "mutex_unlock",
+      "spin_lock",
+      "spin_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "partial-init-copy info leak",
+    "concrete_anchors": [
+      "copy_to_user",
+      "hcall_get_cpu_state",
+      "kmalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "81ec618f59415bdcf3e8989e2691c1f240be27fb": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "PCI device refcount leak",
+    "concrete_anchors": [
+      "pci_dev_put",
+      "pci_get_domain_bus_and_slot"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "8318e04ab2526b155773313b66a1542476ce1106": {
+    "anchor_target_ids": [
+      600
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/sound/soc/qcom/qdsp6/built-in.a"
+    ],
+    "bug_name": "nullable topology module dereference",
+    "concrete_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on audioreach_parse_common_tokens, a Qualcomm ASoC QDSP6 AudioReach topology parser function that textually appears only under sound/soc/qcom/qdsp6; as specified, this rare anchor is required for the rule to fire, so it is driver/subsystem-specific rather than a generic nullable dereference pattern."
+    },
+    "rare_anchors": [
+      "audioreach_parse_common_tokens"
+    ],
+    "source": "provenance"
+  },
+  "85a7555575a0e48f9b73db310d0d762a08a46d63": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "listed control freed before unlink",
+    "concrete_anchors": [
+      "kfree",
+      "list_add",
+      "list_add_tail",
+      "list_del"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "85b6256469cebdac395e7447147e06b2e151014f": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-free",
+    "concrete_anchors": [
+      "fb_get_options",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "863810d4985ad214f70c1623f24384ccc850f2a2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized-scalar-use",
+    "concrete_anchors": [
+      "lwmi_om_fan_get_set"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "87bd2ad568e15b90d5f7d4bcd70342d05dad649c": {
+    "anchor_target_ids": [
+      142
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/kernel/time/built-in.a"
+    ],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule anchors are the specific POSIX CPU timer lifecycle functions themselves, which are implemented under kernel/time. With both matched functions limited to posix_cpu_timer_create and posix_cpu_timer_del, this is subsystem-specific rather than a generic error-path leak pattern that can fire without those APIs."
+    },
+    "rare_anchors": [
+      "posix_cpu_timer_create",
+      "posix_cpu_timer_del"
+    ],
+    "source": "provenance"
+  },
+  "8a59a2d84fa3de2b4bbb8759b52e62c9c06d9d32": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar use",
+    "concrete_anchors": [
+      "ntfs_zero_range"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "Uninitialized scalar use is a generic C/kernel bug pattern and is not inherently dependent on ntfs_zero_range or the ntfs3 API; similar bugs can plausibly occur anywhere scalar values are conditionally initialized and later used."
+    },
+    "rare_anchors": [
+      "ntfs_zero_range"
+    ],
+    "source": "llm-widened"
+  },
+  "8d13f7a8450206e3f820cdb26e33e91d181071b4": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "pm_runtime_get_sync",
+      "pm_runtime_put_sync_autosuspend"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "96621ca578dbadeb12bd190e0733cdc5c76899d8": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "nullable bo_adev argument dereference",
+    "concrete_anchors": [
+      "svm_range_map_to_gpu"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored solely on svm_range_map_to_gpu and the nullable bo_adev argument behavior is specific to AMDGPU SVM/range mapping code, so it cannot fire outside the module containing that API."
+    },
+    "rare_anchors": [
+      "svm_range_map_to_gpu"
+    ],
+    "source": "provenance"
+  },
+  "97b17dd8266d2e26d9ee3c75a0fa34ecde6944f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "runtime-pm usage-count leak",
+    "concrete_anchors": [
+      "pm_runtime_disable",
+      "pm_runtime_get_sync",
+      "pm_runtime_put_noidle"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9a8826fdfbcd7ed2ccf745f5d54208358d939def": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "kobject lifetime protocol violation",
+    "concrete_anchors": [
+      "kfree",
+      "kobject_init_and_add",
+      "kobject_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9c37eac31c559b079d55890d1dbe70072fec0435": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "reset_control_assert",
+      "reset_control_deassert"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "9e6e7c74315095fd40f41003850690c711e44420": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "mutex_lock_interruptible",
+      "mutex_unlock"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a0fe29d20e7822182e12324905af5115c1b3aed3": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable ioremap return dereference",
+    "concrete_anchors": [
+      "ioremap"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a260bd22a355bcdb74cedac6ab9b10739cd2c62c": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "use-after-publish",
+    "concrete_anchors": [
+      "fd_publish",
+      "private_data"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a3f3859cecacb64f18fd446271ece9a3b3f2d4de": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "kref_get",
+      "kref_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "a6582701178a47c4d0cb2188c965c59c0c0647c8": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "double-free after error-path cleanup",
+    "concrete_anchors": [
+      "amdgpu_free_extended_power_table"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on amdgpu_free_extended_power_table, a driver-specific cleanup API that only appears under drivers/gpu/drm/amd/amdgpu; without that required function the rule cannot textually fire elsewhere."
+    },
+    "rare_anchors": [
+      "amdgpu_free_extended_power_table"
+    ],
+    "source": "provenance"
+  },
+  "aa7069d840dab6bef4887657b94e439c82ae985a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked dma_alloc_coherent return use",
+    "concrete_anchors": [
+      "dma_alloc_coherent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ab42b48f32d4c766420c3499ee9c0289b7028182": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked dma_alloc_coherent return dereference",
+    "concrete_anchors": [
+      "dma_alloc_coherent"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "abfaf0eee97925905e742aa3b0b72e04a918fa9e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "nullable kmemdup return dereference",
+    "concrete_anchors": [
+      "kmemdup_noprof"
+    ],
+    "level": "kernel",
+    "llm_verdict": {
+      "decision": "widen_kernel",
+      "prefixes": [],
+      "reason": "A nullable kmemdup_noprof return dereference is a generic allocation-result handling pattern and can occur in any kernel subsystem, including callers outside mm."
+    },
+    "rare_anchors": [
+      "kmemdup_noprof"
+    ],
+    "source": "llm-widened"
+  },
+  "acc44cbd7727115f9381c35c2898b1b5af665ec8": {
+    "anchor_target_ids": [
+      595
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/wireless/built-in.a"
+    ],
+    "bug_name": "double-free after consumed BSS IE pointers",
+    "concrete_anchors": [
+      "__cfg80211_unlink_bss",
+      "cfg80211_update_known_bss"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is specific to cfg80211 BSS lifetime handling: the consumed BSS IE pointers are managed through cfg80211_update_known_bss and freed/unlinked via __cfg80211_unlink_bss. Those required anchors are confined to net/wireless, so the pattern cannot fire elsewhere without these subsystem functions."
+    },
+    "rare_anchors": [
+      "__cfg80211_unlink_bss",
+      "cfg80211_update_known_bss"
+    ],
+    "source": "provenance"
+  },
+  "b0eeba527e704d6023a6cd9103f929226e326b03": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked devm_kcalloc return dereference",
+    "concrete_anchors": [
+      "devm_kcalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b38e53cbfb9d84732e5984fbd73e128d592415c5": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized heap buffer use",
+    "concrete_anchors": [
+      "kmalloc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "b4e964f84c1a44b0c63a5036efb24cf0f938db0a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "uninitialized scalar return",
+    "concrete_anchors": [],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "fail-open-kernel"
+  },
+  "b5c7a7f452b885bfbe102bd3a057a5f496802f8b": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked kzalloc return dereference",
+    "concrete_anchors": [
+      "kzalloc",
+      "kzalloc_noprof"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba36786b21d19082e696eda85bfcd49e7071944a": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path refcount leak",
+    "concrete_anchors": [
+      "dma_fence_get",
+      "dma_fence_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ba45106342bbdd905651cb9fcefb8c11871d4c25": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "refcount_inc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "badc53620fe813b3a9f727ef9526f98567c2c898": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "reference leak",
+    "concrete_anchors": [
+      "kref_put",
+      "nvmet_rdma_find_get_device",
+      "ref"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "bcb8889c4981fdde42d4fd2c29a77d510fe21da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "managed-lifetime double free",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c39a9a02bc5d841c116dc03c264eb9ceecde806e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free of adapter on error path",
+    "concrete_anchors": [
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c4faab452b3c1ada003d49c477609dd80523b9bf": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double decrement of descriptor_busy",
+    "concrete_anchors": [
+      "atomic_dec",
+      "atomic_inc"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "c849de7d8757a7af801fc4a4058f71d481d367f2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after reply consumes skb",
+    "concrete_anchors": [
+      "genlmsg_reply",
+      "nlmsg_free"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d189f224308c8ac3feeea8e442c99922bd18f1b2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource leak",
+    "concrete_anchors": [
+      "ida_alloc",
+      "ida_free"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d3a9a8cf2d7fd61a2f63df61f6cbc0a9bb007cc0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "double-free after device teardown releases pdata",
+    "concrete_anchors": [
+      "ipu7_bus_add_device",
+      "ipu7_bus_initialize_device",
+      "kfree",
+      "pdata",
+      "put_device"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "d46f9f23897261da53ffbeb89d48a13982ba7d28": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "kcalloc",
+      "kfree"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked fb_add_videomode failure before framebuffer registration",
+    "concrete_anchors": [
+      "fb_add_videomode",
+      "modelist",
+      "register_framebuffer"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "dabac51b8102e1643d8e297a8e6948dab190aa4c": {
+    "anchor_target_ids": [
+      667
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/net/handshake/built-in.a"
+    ],
+    "bug_name": "nullable handshake request dereference",
+    "concrete_anchors": [
+      "handshake_req_next"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on handshake_req_next, a subsystem-specific API in net/handshake; this nullable handshake request dereference pattern requires that API to fire and is not a generic kernel-wide dereference pattern without the anchor."
+    },
+    "rare_anchors": [
+      "handshake_req_next"
+    ],
+    "source": "provenance"
+  },
+  "dc3382fffdec2c1d6df5836c88fa37b39cd8651e": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "unchecked kmemdup return dereference",
+    "concrete_anchors": [
+      "kmemdup"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "ee895ccdf776a676655b1405d493cfcf43d157f0": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "enabled clock leak on error path",
+    "concrete_anchors": [
+      "clk_disable_unprepare",
+      "clk_prepare_enable"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "eedc6867ebad73edbfaf9a0a65fbef7115cc4753": {
+    "anchor_target_ids": [
+      278,
+      301,
+      320,
+      873,
+      981,
+      1012,
+      1024,
+      1030,
+      1156,
+      1248,
+      1272,
+      1287,
+      1360
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/bluetooth/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/input/misc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/media/usb/uvc/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/usb/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/ath/carl9170/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/net/wireless/intersil/p54/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/atm/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/class/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/core/built-in.a",
+      "/artifact/data/linux-v6.16/drivers/usb/serial/built-in.a",
+      "/artifact/data/linux-v6.16/sound/usb/built-in.a",
+      "/artifact/data/linux-v6.16/sound/usb/line6/built-in.a",
+      "/artifact/data/linux-v6.16/sound/usb/misc/built-in.a"
+    ],
+    "bug_name": "error-path sibling interface release leak",
+    "concrete_anchors": [
+      "usb_driver_claim_interface",
+      "usb_driver_release_interface"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is specifically about leaks after usb_driver_claim_interface on sibling USB interfaces and the corresponding usb_driver_release_interface API. Those functions are required anchors for the bug to exist, so it cannot fire in modules without textual use of this USB driver interface-claim API."
+    },
+    "rare_anchors": [
+      "usb_driver_claim_interface",
+      "usb_driver_release_interface"
+    ],
+    "source": "provenance"
+  },
+  "f396f4005180928cd9e15e352a6512865d3bc908": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "usb_alloc_urb",
+      "usb_free_urb"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "f63a9df7e3f9f842945d292a19d9938924f066f9": {
+    "anchor_target_ids": [
+      404
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/kernel/built-in.a"
+    ],
+    "bug_name": "uninitialized scalar use",
+    "concrete_anchors": [
+      "proc_get_long"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on proc_get_long, which is a specific proc/sysctl parsing helper textually present under kernel; without that required function call the rule cannot match elsewhere."
+    },
+    "rare_anchors": [
+      "proc_get_long"
+    ],
+    "source": "provenance"
+  },
+  "f67790a0715edd292d64a104e6e294290243d16d": {
+    "anchor_target_ids": [
+      1624
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/drivers/gpu/drm/amd/amdgpu/built-in.a"
+    ],
+    "bug_name": "double-free after stale GPU memory pointer cleanup",
+    "concrete_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored on dm_helpers_free_gpu_mem, an AMDGPU display memory-helper cleanup API that textually appears only under drivers/gpu/drm/amd/amdgpu. Without that required function/API, this specific stale GPU memory pointer double-free rule cannot match elsewhere."
+    },
+    "rare_anchors": [
+      "dm_helpers_free_gpu_mem"
+    ],
+    "source": "provenance"
+  },
+  "f9c169b51b6ce20394594ef674d6b10efba31220": {
+    "anchor_target_ids": [
+      417
+    ],
+    "anchor_targets": [
+      "/artifact/data/linux-v6.16/fs/smb/client/built-in.a"
+    ],
+    "bug_name": "double ownership release",
+    "concrete_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "level": "module",
+    "llm_verdict": {
+      "decision": "keep",
+      "prefixes": [],
+      "reason": "The rule is anchored exclusively on cifs_get_writable_path and smb2_compound_op, which are SMB/CIFS client-specific APIs under fs/smb/client; without those required functions the double ownership release pattern as defined cannot fire elsewhere."
+    },
+    "rare_anchors": [
+      "cifs_get_writable_path",
+      "smb2_compound_op"
+    ],
+    "source": "provenance"
+  },
+  "fa11039d6cdff84584a3ef8cc1f5e1b56e045da2": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "of_node reference leak on error path",
+    "concrete_anchors": [
+      "of_find_node_by_name",
+      "of_node_put"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  },
+  "fcaf242e7fc406e78f444a35441e3b58f5e28781": {
+    "anchor_target_ids": [],
+    "anchor_targets": [],
+    "bug_name": "error-path resource-leak",
+    "concrete_anchors": [
+      "dma_release_channel",
+      "dma_request_chan"
+    ],
+    "level": "kernel",
+    "rare_anchors": [],
+    "source": "provenance"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "version": "0.5",
+  "bug": {
+    "key": "nullable_memremap_npd",
+    "name": "nullable memremap return dereference",
+    "description": "A memremap return may be NULL and is dereferenced without a dominating non-NULL guard."
+  },
+  "events": [
+    {
+      "name": "MaybeNullRet",
+      "kind": "Ret",
+      "description": "memremap returns the tracked mailbox pointer",
+      "role": "source",
+      "funcs": ["memremap"]
+    },
+    {
+      "name": "BrNonNull",
+      "kind": "BrNonNull",
+      "description": "the tracked mapping is known non-NULL",
+      "role": "guard"
+    },
+    {
+      "name": "Ref",
+      "kind": "Ref",
+      "description": "the tracked mapping is dereferenced",
+      "role": "sink"
+    }
+  ],
+  "fsm": {
+    "states": ["Init", "MaybeNull", "NonNull", "NPD"],
+    "initial": "Init",
+    "transitions": {
+      "Init": {
+        "MaybeNullRet": "MaybeNull",
+        "BrNonNull": "Init",
+        "Ref": "Init"
+      },
+      "MaybeNull": {
+        "MaybeNullRet": "MaybeNull",
+        "BrNonNull": "NonNull",
+        "Ref": "NPD"
+      },
+      "NonNull": {
+        "MaybeNullRet": "MaybeNull",
+        "BrNonNull": "NonNull",
+        "Ref": "NonNull"
+      },
+      "NPD": {
+        "MaybeNullRet": "NPD",
+        "BrNonNull": "NPD",
+        "Ref": "NPD"
+      }
+    },
+    "merges": [
+      {"a": "Init", "b": "MaybeNull", "result": "MaybeNull"},
+      {"a": "Init", "b": "NonNull", "result": "NonNull"}
+    ],
+    "state_roles": {
+      "Init": "init",
+      "MaybeNull": "danger",
+      "NonNull": "safe",
+      "NPD": "bug"
+    }
+  },
+  "trigger": {
+    "bug_state": "NPD",
+    "key_events": ["MaybeNullRet", "Ref"],
+    "sliced_events": ["MaybeNullRet", "BrNonNull", "Ref"]
+  },
+  "context": {
+    "start_events": ["MaybeNullRet"],
+    "end_events": ["BrNonNull"]
+  },
+  "modeling": "typestate_protocol",
+  "protocol_semantics": {
+    "guard_semantics": "nonnull_branch",
+    "exit_semantics": "any_return"
+  },
+  "path_semantics": {
+    "require_same_path": true,
+    "source_visibility": "stable",
+    "require_distinct_key_locations": false
+  }
+}

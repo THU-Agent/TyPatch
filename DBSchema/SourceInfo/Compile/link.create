@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS link (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	target_file TEXT, link_list TEXT,
+	ir_list TEXT,
+	UNIQUE (target_file,
+		link_list,
+		ir_list)
+);

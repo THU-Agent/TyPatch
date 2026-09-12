@@ -1,0 +1,71 @@
+{
+  "version": "0.5",
+  "bug": {
+    "key": "scalar_uninit_return",
+    "name": "uninitialized scalar return",
+    "description": "A named local integer may be returned on a zero-iteration path before it is initialized."
+  },
+  "events": [
+    {
+      "name": "StoreInit",
+      "kind": "StoreInit",
+      "description": "an assignment initializes the tracked local scalar",
+      "role": "init"
+    },
+    {
+      "name": "Use",
+      "kind": "Use",
+      "description": "the tracked local scalar is loaded for return",
+      "role": "sink",
+      "object": {
+        "track_objects": ["local_named_nonparam_int"],
+        "use_sinks": ["return"]
+      }
+    }
+  ],
+  "fsm": {
+    "states": ["Init", "Initialized", "UninitUse"],
+    "initial": "Init",
+    "transitions": {
+      "Init": {
+        "StoreInit": "Initialized",
+        "Use": "UninitUse"
+      },
+      "Initialized": {
+        "StoreInit": "Initialized",
+        "Use": "Initialized"
+      },
+      "UninitUse": {
+        "StoreInit": "UninitUse",
+        "Use": "UninitUse"
+      }
+    },
+    "merges": [
+      {"a": "Init", "b": "Initialized", "result": "Initialized"}
+    ],
+    "state_roles": {
+      "Init": "init",
+      "Initialized": "safe",
+      "UninitUse": "bug"
+    }
+  },
+  "trigger": {
+    "bug_state": "UninitUse",
+    "key_events": ["Use"],
+    "sliced_events": ["StoreInit", "Use"]
+  },
+  "context": {
+    "start_events": [],
+    "end_events": []
+  },
+  "modeling": "scalar_uninit_use",
+  "protocol_semantics": {
+    "guard_semantics": "none",
+    "exit_semantics": "any_return"
+  },
+  "path_semantics": {
+    "require_same_path": false,
+    "source_visibility": "stable",
+    "require_distinct_key_locations": false
+  }
+}
