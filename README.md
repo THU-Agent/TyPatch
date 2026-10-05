@@ -15,7 +15,8 @@
 ## Quick start
 
 Install the pinned Python dependencies, point `TYPATCH_DATA` at the runtime
-data bundle, and run one of the paper rule pools:
+data bundle (see [Runtime data bundle](#runtime-data-bundle)), and run one of
+the paper rule pools:
 
 ```bash
 python3 -m pip install -r docker/requirements.txt
@@ -30,6 +31,54 @@ export TYPATCH_RESULTS="$PWD/artifact-results"
 `/artifact/results`; setting both explicitly is recommended for local runs.
 Each run creates a timestamped directory below the results root unless
 `--run-name` is provided.
+
+## Runtime data bundle
+
+The runtime data (the Linux v6.16 source tree, LLVM IR, compile database, and
+rule pools) is published as a Docker/OCI image in the
+[`runtime-data-v1` release](https://github.com/THU-Agent/TyPatch/releases/tag/runtime-data-v1).
+The 6.8 GB archive is split into four parts (`typatch.tar.zst.part-0` to
+`typatch.tar.zst.part-3`) with a `SHA256SUMS` file. Loading the image needs
+about 60 GB of free Docker storage:
+
+```bash
+sha256sum -c SHA256SUMS
+cat typatch.tar.zst.part-* | zstd -dc | docker load
+```
+
+To run a paper rule pool inside the image:
+
+```bash
+mkdir -p artifact-results
+docker run --rm --init --user "$(id -u):$(id -g)" --env HOME=/tmp \
+  -v "$PWD/artifact-results:/artifact/results" \
+  typatch:latest evaluate --pool gpt-5.5
+```
+
+To use the data with this checkout instead, copy it out of the image. The
+paths stored in `compile.db` are absolute and point below `/artifact/data`, so
+make the data available at that location:
+
+```bash
+docker create --name typatch-data typatch:latest
+docker cp typatch-data:/artifact/data ./artifact-data
+docker rm typatch-data
+sudo mkdir -p /artifact && sudo ln -s "$PWD/artifact-data" /artifact/data
+export TYPATCH_DATA=/artifact/data
+```
+
+The bundle contains:
+
+- `linux-v6.16/`: Linux v6.16 (tag `v6.16`, commit
+  `038d61fd642278bab63ee8ef722c50d10ab01e8f`) with the kernel `.config` used to
+  build the IR.
+- `llvm-ir/`: 25,452 textual LLVM IR files, one per translation unit, emitted
+  by Ubuntu clang 18.1.8 with debug info. Each file records its compiler
+  command line in its `DICompileUnit` metadata.
+- `compile/Database/SourceInfo/compile.db`: a SQLite table
+  `link(id, target_file, link_list, ir_list)` with 1,792 link units
+  (`built-in.a`, `lib.a`, and `vmlinux.a` archives) and the source and IR files
+  that make up each one.
 
 ## Paper evaluation
 
@@ -54,6 +103,7 @@ The runtime data directory must have the following layout:
 $TYPATCH_DATA/
 ├── compile/Database/SourceInfo/compile.db
 ├── linux-v6.16/
+├── llvm-ir/
 └── pools/
     ├── gpt-5.5/
     │   ├── rules/*.ts
@@ -66,8 +116,8 @@ $TYPATCH_DATA/
         └── scope_map.json
 ```
 
-The compile database and Linux source tree are used by the shared analyzer;
-the pool directory supplies the executable rules and their scope maps.
+The compile database, Linux source tree, and LLVM IR are used by the shared
+analyzer; the pool directory supplies the executable rules and their scope maps.
 
 ## Synthesize and scan
 
